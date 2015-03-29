@@ -23,15 +23,15 @@ public class Tournament {
     }
     
     public AntBrain runTournament() {
-                
+        int playersInRound = playerNo.size();     
+        
+        
         
         return null;
     }
     
     public ArrayList<AntBrain> runRound(){
-        int playersInRound = playerNo.size();
-        
-        
+         
         
         return null;
     }
