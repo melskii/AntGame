@@ -5,6 +5,15 @@
 package AntGame;
 
 
-public class Marker {
-    
+public class Marker extends Condition {
+
+    public int type;
+    public String colour;
+
+    public Marker (int type, String colour)
+    {
+        this.type = type;
+        this.colour = colour;
+    }
+
 }
