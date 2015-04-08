@@ -367,8 +367,6 @@ public class AntBrain {
     public void populateAnts(){
         
         
-        
-        
     }
     
     public void step(){
