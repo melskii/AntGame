@@ -11,6 +11,7 @@ package AntGame.Tokens;
  * @author Anna
  */
 public class IMark implements Instruction {
+    
     public Marker marker;
     public int state;
     
