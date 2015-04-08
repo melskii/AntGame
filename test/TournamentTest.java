@@ -21,17 +21,17 @@ public class TournamentTest {
     
     @Test
     public void multiplicationOfZeroIntegersShouldReturnZero() {
-        AntBrain[] uploaded;
+//        AntBrain[] uploaded;
+//        
+//        for(int i = 0; i < 5; i++){
+//            uploaded.add(AntBrain b = new AntBrain());
+//        }
         
-        for(int i = 0; i < 5; i++){
-            uploaded.add(AntBrain b = new AntBrain());
-        }
-        
-    // MyClass is tested
+    // Tournament is tested
         Tournament tester = new Tournament();
 
     // Tests  
-        assertEquals()
+        
    
     }
 }
