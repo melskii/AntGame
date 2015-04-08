@@ -4,10 +4,10 @@
  */
 package AntGame.Tokens;
 
-import AntGame.Condition;
 
 
-public class Marker extends Condition {
+
+public class Marker implements Condition {
 
     public int type;
     public String colour;

@@ -1,13 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package AntGame;
 
 import AntGame.Tokens.*;
+import AntGame.exceptions.*;
 import java.util.LinkedList;
 import java.util.ArrayList;
+import java.io.*;
 
+
+
+/**
+ * @author ms660
+ */
 
 public class AntBrain {
 
@@ -18,15 +22,163 @@ public class AntBrain {
     private int currentAnt;
 
 
-    public AntBrain (String b)
+    /**
+     * Constructor takes a file as input and checks if the input file is a valid Ant Brain.
+     * 
+     * @param b .ant File 
+     * @throws IOException 
+     */
+    public AntBrain (File b) throws IOException, AntBrainException
     {
 
-        instructions = new Graph();
+        ArrayList<String> brain = new ArrayList<String>();
+        BufferedReader br = new BufferedReader(new FileReader(b));
+        
+        String line = null;
+        
+        while ((line = br.readLine()) != null) {
+            
+            //System.out.println(line);
+            brain.add(line);
+            
+        }
+        
+        try {
+        
+            instructions = new Graph();
+            validAntBrain(brain);
+                    
+         } catch (AntBrainException e) 
+         {
+             throw new AntBrainException("Ant Brain not valid: " + e.getMessage());
+         }
+    
+        
+         System.out.println(brain.size() + " instructions loaded");
+        
 
     }
 
-    public boolean validAntBrain(ArrayList<String> brain)
+    public boolean validAntBrain(ArrayList<String> brain) throws AntBrainException
     {
+        
+        Instruction i;
+        int j = 0;
+        int range = brain.size();
+        
+        while (j < brain.size())
+        {
+            
+            String inst = brain.get(j);
+            String[] line = brain.get(j).split(" ");
+            
+            
+            //Sense(SenseDirection sd, int state1, int state2, Condition c)
+            //[0-9][0-9]* : Only positive whole numbers allowed.            
+            if (inst.matches("Sense \\w+ [0-9][0-9]* [0-9][0-9]* \\w+( [0-5])*"))
+            {
+                String _sensedir = line[1];
+                int _state1 = Integer.parseInt(line[2]);
+                int _state2 = Integer.parseInt(line[3]);
+                String _cond = line[4];
+                
+                if (line.length == 6)
+                {
+                    String _marker = line[5];
+                }
+                
+                SenseDirection sd;
+                
+               
+                //SenseDirection (Here|Ahead|LeftAhead|RightAhead)
+                if (_sensedir.equals("Here"))
+                {
+                    sd = new Here();
+                }
+                else if (_sensedir.equals("Ahead"))
+                {
+                    sd = new Ahead();
+                }
+                else if (_sensedir.equals("LeftAhead"))
+                {
+                    sd = new LeftAhead();
+                }
+                else if (_sensedir.equals("RightAhead"))
+                {
+                    sd = new RightAhead();
+                }
+                else {
+                    
+                    throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ") Should be one of the following: Here, Ahead, LeftAhead, RightAhead");
+                }
+                
+                //_state1 and _state2 validation
+                if (_state1 >= range || _state2 >= range)
+                {
+                    throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ") States should be less than " + range);
+                }
+                
+                
+                
+              
+            }
+            
+            //Mark (int marker, int state)
+            else if (inst.matches("Mark [0-5] [0-9][0-9]*"))
+            {
+                
+            }
+            
+            //Unmark (int marker, int state)
+            else if (inst.matches("Unmark [0-5] [0-9][0-9]*"))
+            {
+                
+            }
+            
+            //Pickup (int state1, int state2)
+            else if (inst.matches("PickUp [0-9][0-9]* [0-9][0-9]*"))
+            {
+                
+            }
+            
+            //Drop (int state)
+            else if (inst.matches("Drop [0-9][0-9]*"))
+            {
+                
+            }
+            
+            //Turn (Left_or_Right lr, int state)
+            else if (inst.matches("Turn (Left|Right) [0-9][0-9]*"))
+            {
+                
+            }
+            
+            //Move (int state1, int state2)
+            else if (inst.matches("Move [0-9][0-9]* [0-9][0-9]*"))
+            {
+                
+            }
+            
+            //Flip (int state1, int state2)
+            else if (inst.matches("Flip [0-9][0-9]* [0-9][0-9]* [0-9][0-9]*"))
+            {
+                
+            }
+            
+            else {
+             
+                 throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ")");
+                
+            }
+            
+            
+            j++;
+        }
+        
+        
+        //
+        
+        /*
 
         boolean valid = true;
         Instruction token;
@@ -213,13 +365,14 @@ public class AntBrain {
                 }
 
             }
-            */
+            
 
             index++;
         }
 
+        */
 
-        return false;
+        return true;
     }
 
     public void setAntWorld (AntWorld world)

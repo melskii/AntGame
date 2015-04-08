@@ -20,7 +20,7 @@ public class Position {
     private HashMap<String, Marker> marker;
     
     /**
-     * The class constructor initialises sets the x and y co-ordinates from the antWorld
+     * The class constructor initializes sets the x and y co-ordinates from the antWorld
      * 
      * @param x
      * @param y 
