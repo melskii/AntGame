@@ -6,10 +6,18 @@
 
 package AntGame.Tokens;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Anna
  */
 public interface Instruction {
+    
+    /**
+     * Returns the next states
+     * @return states
+     */
+    public ArrayList<Integer> getStates();
 
 }

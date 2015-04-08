@@ -6,7 +6,9 @@
 
 package AntGame.Tokens;
 
-import AntGame.Condition;
+import java.util.ArrayList;
+
+
 
 /**
  *
@@ -19,11 +21,26 @@ public class ISense implements Instruction {
     public int state2;
     public Condition cond;
     
-    public void sense(SenseDirection s, int s1, int s2, Condition cond){
+    public ISense (SenseDirection s, int s1, int s2, Condition cond){
+        
         sensedir = s;
         state1 = s1;
         state2 = s2;
         this.cond = cond;
         
+    }
+    
+    /**
+     * Returns the next states
+     * @return states
+     */
+    @Override
+    public ArrayList<Integer> getStates() {
+        
+        ArrayList<Integer> s = new ArrayList<Integer>();
+        s.add(state1);
+        s.add(state2);
+        
+        return s;
     }
 }

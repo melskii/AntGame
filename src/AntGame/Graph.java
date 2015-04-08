@@ -1,7 +1,7 @@
 package AntGame;
 
 /**
- * Created by ms660 on 30/03/2015.
+ * Created by ms660.
  */
 
 import AntGame.Tokens.*;
@@ -14,51 +14,70 @@ public class Graph {
     private ArrayList<Instruction> vertex;
     private HashMap<Integer, ArrayList<Integer>> edge;
 
+    /**
+     * Constructor for the Graph class
+     */
     public Graph()
     {
         this.vertex = new ArrayList<Instruction>();
         this.edge = new HashMap<Integer, ArrayList<Integer>>();
     }
 
-    public void insertInstruction(int i, Instruction inst)
+    /**
+     * Inserts a vertex into the graph
+     * 
+     * @param i index 
+     * @param inst Instruction
+     */
+    public void insert (int i, Instruction inst)
     {
         vertex.add(i, inst);
         insertEdge(i, inst);
     }
 
-    public Instruction getInstruction (int i)
+    /**
+     * Returns an instruction from the graph
+     * 
+     * @param i index
+     * @return Instruction
+     */
+    public Instruction getState (int i)
     {
        return vertex.get(i);
     }
 
+    /**
+     * Inserts connecting edges to other vertexes
+     * @param i vertex index
+     * @param inst vertex instruction
+     */
     public void insertEdge(int i, Instruction inst)
     {
-
-        ArrayList<Integer> edgeStates = new ArrayList<Integer>();
-
-
-        if (inst instanceof IMark) {
-
-            //edgeStates.add(IMark.state);
-            //edge.put(i, edgeStates);
+        ArrayList<Integer> edges = inst.getStates();
+        edge.put(i, edges);
+    }
+    
+    /**
+     * Returns the next states (edges)
+     * 
+     * @param current Index of the current state
+     * @return the adjacent states to  the current state
+     */
+    public Instruction[] getNextStates(int current)
+    {
+        ArrayList<Integer> state = edge.get(current);
+        Instruction[] next = new Instruction[state.size()];
+        
+        int i = 0;
+        
+        for (int j : state)
+        {
+            next[j] = getState(j);
+            i++;
         }
-
-        else if (inst instanceof IUnmark) {
-
-            //edgeStates.add(IUnmark.state);
-            //edge.put(i, edgeStates);
-
-        }
-
-
-
+        
+        return next;
+        
     }
 
-
-
-
-
-
 }
-
-

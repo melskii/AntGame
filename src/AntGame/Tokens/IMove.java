@@ -12,18 +12,16 @@ import java.util.ArrayList;
  *
  * @author Anna
  */
-public class IFlip implements Instruction {
-    public int flip;
+public class IMove implements Instruction { 
     public int state1;
     public int state2;
     
-    public IFlip (int f, int state1, int state2)
+    public IMove(int s1, int s2)
     {
-        flip = f;
-        this.state1 = state1;
-        this.state2 = state2;
+        state1 = s1;
+        state2 = s2;
     }
-
+    
     /**
      * Returns the next states
      * @return states
@@ -37,4 +35,5 @@ public class IFlip implements Instruction {
         
         return s;
     }
+    
 }

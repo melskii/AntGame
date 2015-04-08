@@ -82,7 +82,7 @@ Flip 5 361 81
 Flip 4 359 82
 Flip 3 357 83
 Flip 2 353 355
-Sense ZLeftAhead 0 85 FoeHome
+Sense LeftAhead 0 88 Cheese
 Turn Right 0
 Flip 6 363 87
 Flip 5 361 88

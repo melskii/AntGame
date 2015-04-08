@@ -155,31 +155,5 @@ public class AntBrainTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of getNextInstruction method, of class AntBrain.
-     */
-    //@Test
-    public void testGetNextInstruction() {
-        System.out.println("getNextInstruction");
-        AntBrain instance = null;
-        Instruction expResult = null;
-        Instruction result = instance.getNextInstruction();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of returnRandomInt method, of class AntBrain.
-     */
-    //@Test
-    public void testReturnRandomInt() {
-        System.out.println("returnRandomInt");
-        AntBrain instance = null;
-        int expResult = 0;
-        int result = instance.returnRandomInt();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+    
 }

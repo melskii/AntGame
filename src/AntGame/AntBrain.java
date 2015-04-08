@@ -59,6 +59,13 @@ public class AntBrain {
 
     }
 
+    /**
+     * Validates each instruction in the Ant Brain and to our instructions if valid, throws an exception otherwise.
+     * 
+     * @param brain 
+     * @return true if valid, throws an exception if not
+     * @throws AntBrainException when brain is not valid
+     */
     public boolean validAntBrain(ArrayList<String> brain) throws AntBrainException
     {
         
@@ -82,13 +89,10 @@ public class AntBrain {
                 int _state2 = Integer.parseInt(line[3]);
                 String _cond = line[4];
                 
-                if (line.length == 6)
-                {
-                    String _marker = line[5];
-                }
+                
                 
                 SenseDirection sd;
-                
+                Condition c;
                
                 //SenseDirection (Here|Ahead|LeftAhead|RightAhead)
                 if (_sensedir.equals("Here"))
@@ -118,8 +122,54 @@ public class AntBrain {
                     throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ") States should be less than " + range);
                 }
                 
+                if (_cond.equals("Friend"))
+                {
+                    c = new Friend();
+                }
+                else if (_cond.equals("Foe"))
+                {   
+                    c = new Foe();        
+                }
+                else if (_cond.equals("FriendWithFood"))
+                {   
+                    c = new FriendWithFood();        
+                }
+                else if (_cond.equals("FoeWithFood"))
+                {   
+                    c = new FoeWithFood();        
+                }
+                else if (_cond.equals("Food"))
+                {   
+                    c = new Food();        
+                }
+                else if (_cond.equals("Rock"))
+                {   
+                    c = new Rock();        
+                }
+                else if (_cond.equals("Marker") && line.length == 6)
+                {   
+                    c = new Marker(colour, Integer.parseInt(line[5]));        
+                }
+                else if (_cond.equals("FoeMarker"))
+                {   
+                    c = new Marker(getFoeColour(), -1);        
+                }
+                else if (_cond.equals("Home"))
+                {   
+                    c = new Home();
+                }
+                else if (_cond.equals("FoeHome"))
+                {   
+                    c = new FoeHome();
+                }
                 
+                else {
+                    
+                    throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + "). Not a valid Condition");
+                    
+                }
                 
+                i = new ISense(sd, _state1, _state2, c);
               
             }
             
@@ -127,41 +177,123 @@ public class AntBrain {
             else if (inst.matches("Mark [0-5] [0-9][0-9]*"))
             {
                 
+                int _marker = Integer.parseInt(line[1]);
+                int _state = Integer.parseInt(line[2]);
+                
+                Marker marker = new Marker(colour, _marker);
+                
+                 //_state1 and _state2 validation
+                if (_state >= range)
+                {
+                    throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ") States should be less than " + range);
+                }
+                
+                i = new IMark(marker, _state);
+                
             }
             
             //Unmark (int marker, int state)
             else if (inst.matches("Unmark [0-5] [0-9][0-9]*"))
             {
                 
+                int _marker = Integer.parseInt(line[1]);
+                int _state = Integer.parseInt(line[2]);
+                
+                Marker marker = new Marker(colour, _marker);
+                
+                 //_state1 and _state2 validation
+                if (_state >= range)
+                {
+                    throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ") States should be less than " + range);
+                }
+                
+                i = new IUnmark(marker, _state);
             }
             
             //Pickup (int state1, int state2)
             else if (inst.matches("PickUp [0-9][0-9]* [0-9][0-9]*"))
             {
+                int _state1 = Integer.parseInt(line[1]);
+                int _state2 = Integer.parseInt(line[2]);
                 
+                 //_state1 and _state2 validation
+                if (_state1 >= range || _state2 >= range)
+                {
+                    throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ") States should be less than " + range);
+                }
+                
+                i = new IPickup(_state1, _state2);
             }
             
             //Drop (int state)
             else if (inst.matches("Drop [0-9][0-9]*"))
             {
+                int _state = Integer.parseInt(line[1]);
                 
+                 //_state1 and _state2 validation
+                if (_state >= range)
+                {
+                    throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ") States should be less than " + range);
+                }
+                
+                i = new IDrop(_state);
             }
             
             //Turn (Left_or_Right lr, int state)
             else if (inst.matches("Turn (Left|Right) [0-9][0-9]*"))
             {
+                String _lr = line[1];
+                int _state = Integer.parseInt(line[2]);
+                
+                Left_or_Right lr;
+                
+                //_state1 and _state2 validation
+                if (_state >= range)
+                {
+                    throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ") States should be less than " + range);
+                }
+                
+                if (_lr.equals("Left"))
+                {
+                    lr = new Left();
+                }
+                else
+                {
+                    lr = new Right();
+                }
+                
+                i = new ITurn(lr, _state);
                 
             }
             
             //Move (int state1, int state2)
             else if (inst.matches("Move [0-9][0-9]* [0-9][0-9]*"))
             {
+                int _state1 = Integer.parseInt(line[1]);
+                int _state2 = Integer.parseInt(line[2]);
                 
+                 //_state1 and _state2 validation
+                if (_state1 >= range || _state2 >= range)
+                {
+                    throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ") States should be less than " + range);
+                }
+                
+                i = new IMove(_state1, _state2);
             }
             
             //Flip (int state1, int state2)
             else if (inst.matches("Flip [0-9][0-9]* [0-9][0-9]* [0-9][0-9]*"))
             {
+                int _flip =  Integer.parseInt(line[1]);
+                int _state1 = Integer.parseInt(line[2]);
+                int _state2 = Integer.parseInt(line[3]);
+                
+                if (_state1 >= range || _state2 >= range)
+                {
+                    throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ") States should be less than " + range);
+                }
+                
+                i = new IFlip(_flip, _state1, _state2);
                 
             }
             
@@ -170,245 +302,100 @@ public class AntBrain {
                  throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ")");
                 
             }
+          
             
+            instructions.insert(j, i);
             
             j++;
         }
-        
-        
-        //
-        
-        /*
-
-        boolean valid = true;
-        Instruction token;
-
-        int index = 0;
-
-        while (valid && index < brain.size())
-        {
-
-            String i = brain.get(index);
-            String[] list = i.split(" ");
-
-
-            if (i.matches("Mark [0-5] \\d+"))
-            {
-
-                int m = Integer.parseInt(list[1]);
-                Marker marker = new Marker(colour, m);
-
-                int state = Integer.parseInt(list[2]);
-
-                token = new IMark(marker, state);
-                instructions.insertInstruction(index, token);
-            }
-
-            else if  (i.matches("Unmark [0-5] \\d+"))
-            {
-
-                int m = Integer.parseInt(list[1]);
-                Marker marker = new Marker(colour, m);
-
-                int state = Integer.parseInt(list[2]);
-
-                token = new IUnmark(marker, state);
-                instructions.insertInstruction(index, token);
-            }
-
-            else if (i.matches("PickUp \\d+ \\d+"))
-            {
-                int state1 = Integer.parseInt(list[1]);
-                int state2 = Integer.parseInt(list[2]);
-
-                token = new IPickUp(state1, state2);
-                instructions.insertInstruction(index, token);
-            }
-
-
-            else if (i.matches("Drop \\d+"))
-            {
-
-                int state = Integer.parseInt(list[1]);
-
-                token = new IDrop(state);
-                instructions.insertInstruction(index, token);
-            }
-
-            /*
-            else if (i.matches("Turn [Left|Right] \\d+"))
-            {
-                Left_or_Right lr;
-
-                if (list[1].matches("Left"))
-                {
-                    lr = new Left();
-                }
-                else {
-                    lr = new Right();
-                }
-
-                token = new iTurn(lr, list[2]);
-                instructions.insertInstruction(index, token);
-
-            }
-
-            else if (i.matches("Move \\d+ \\d+"))
-            {
-                token = new iMove(list[1], list[2]);
-                instructions.insertInstruction(index, token);
-            }
-
-            else if (i.matches("Flip \\d+ \\d+ \\d+"))
-            {
-                token = new iFlip(list[1], list[2], list[3]);
-                instructions.insertInstruction(index, token);
-            }
-
-            else if (i.matches("Sense \\w+  \\d+ \\d+ \\w+"))
-            {
-                SenseDirection sd = new SenseDirection();
-                Condition c = new Condition();
-
-                if (list[0].matches("Here")){
-                    sd = new Here();
-                }
-                else if (list[0].matches("Ahead")) {
-                    sd = new Ahead();
-                }
-                else if (list[0].matches("LeftAhead")){
-                    sd = new LeftAhead();
-                }
-                else if (list[0].matches("RightAhead")) {
-                    sd = new RightAhead();
-                }
-                else {
-                    valid = false;
-                }
-
-
-                //Check the conditions
-                if (valid){
-
-                    if (list[3].matches("Friend"))
-                    {
-                        c = new Friend();
-                    }
-
-                    else if (list[3].matches("Foe"))
-                    {
-                        c = new Foe();
-                    }
-
-                    else if (list[3].matches("FriendWithFood")) {
-
-                        c = new FriendWithFood();
-
-                    }
-
-                    else if (list[3].matches("FoeWithFood")) {
-
-                        c = new FoeWithFood();
-
-                    }
-
-                    else if (list[3].matches("Food")) {
-
-                        c = new Food();
-
-                    }
-
-                    else if (list[3].matches("Rock")) {
-
-                        c = new Rock();
-
-                    }
-
-                    else if (list[3].matches("Marker")) {
-
-                        c = new Marker();
-
-
-                    }
-
-                    else if (list[3].matches("FoeMarker")) {
-
-                        c = new FoeMarker();
-
-                    }
-
-                    else if (list[3].matches("Home")) {
-
-                        c = new Home();
-
-                    }
-
-                    else if (list[3].matches("FoeHome")) {
-
-                        c = new FoeHome();
-
-                    }
-
-                    else {
-                        valid = false;
-                    }
-
-
-                }
-
-
-                if (valid) {
-
-                    token = new Sense(sd, list[1], list[2], c);
-                    instructions.insertInstruction(index, token);
-
-                }
-
-            }
-            
-
-            index++;
-        }
-
-        */
-
+     
         return true;
     }
 
+    /**
+     * Sets the AntWorld the Brain is playing in and populates the Ants in the AntHill
+     * 
+     * @param world AntWorld
+     */
     public void setAntWorld (AntWorld world)
     {
         this.antWorld = world;
+        populateAnts();
     }
 
-
-    public void setColour (String c)
+    /**
+     * Sets the colour of the AntBrain and all of the Ants belonging to that AntBrain
+     * 
+     * @param colour 
+     */
+    public void setColour (String colour)
     {
-        this.colour = c;
+        this.colour = colour;
+        
+        for (Ant a : ants)
+        {
+            a.setColour(colour);
+        }
     }
 
+    /**
+     * Returns the teams colour
+     * 
+     * @return the teams colour
+     */
     public String getColour()
     {
         return this.colour;
+   
     }
 
-    public void populateAnts()
+    
+    /**
+    * Returns the next instructions available.
+    * @param state
+    * @return set of next Instructions
+    */
+   
+    /*
+    public Instruction[] getNextInstructions(int state)
     {
-
+        return instructions.getNextStates(state);
+        
     }
-
-    public void step()
-    {
-
+    */
+    
+    public void populateAnts(){
+        
+        
+        
+        
     }
-
-    public Instruction getNextInstruction()
-    {
-        return null;
+    
+    public void step(){
+        
+        
+        
+        
+        
     }
-
-    public int returnRandomInt()
+    
+  
+    
+    /**
+     * Returns the other teams colour
+     * 
+     * @param c Current team colour
+     * @return Opposite teams colour
+     */
+    private String getFoeColour()
     {
-        return 0;
+        if (colour == "Black")
+        {
+            return "Red";
+        }
+        else {
+            return "Black";
+        }
     }
     
 }

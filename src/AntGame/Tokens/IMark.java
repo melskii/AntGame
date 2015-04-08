@@ -6,6 +6,8 @@
 
 package AntGame.Tokens;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Anna
@@ -19,6 +21,19 @@ public class IMark implements Instruction {
     {
         marker = m;
         state = s;
+    }
+    
+    /**
+     * Returns the next states
+     * @return states
+     */
+    @Override
+    public ArrayList<Integer> getStates() {
+        
+        ArrayList<Integer> s = new ArrayList<Integer>();
+        s.add(state);
+        
+        return s;
     }
     
 }
