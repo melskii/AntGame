@@ -7,7 +7,6 @@ package AntGame;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import org.junit.Test;
 
 
 public class Tournament {
