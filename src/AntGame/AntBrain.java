@@ -4,12 +4,7 @@
  */
 package AntGame;
 
-import AntGame.Tokens.Marker;
-import AntGame.Tokens.IMark;
-import AntGame.Tokens.IUnmark;
-import AntGame.Tokens.IPickUp;
-import AntGame.Tokens.Instruction;
-import AntGame.Tokens.IDrop;
+import AntGame.Tokens.*;
 import java.util.LinkedList;
 import java.util.ArrayList;
 

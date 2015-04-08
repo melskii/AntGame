@@ -4,7 +4,7 @@ package AntGame;
  * Created by ms660 on 30/03/2015.
  */
 
-import AntGame.Tokens.Instruction;
+import AntGame.Tokens.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,16 +37,16 @@ public class Graph {
         ArrayList<Integer> edgeStates = new ArrayList<Integer>();
 
 
-        if (inst instanceof iMark) {
+        if (inst instanceof IMark) {
 
-            edgeStates.add(iMark.state);
-            edge.put(i, edgeStates);
+            //edgeStates.add(IMark.state);
+            //edge.put(i, edgeStates);
         }
 
-        else if (inst instanceof iUnMark) {
+        else if (inst instanceof IUnmark) {
 
-            edgeStates.add(iUnmark.state);
-            edge.put(i, edgeStates);
+            //edgeStates.add(IUnmark.state);
+            //edge.put(i, edgeStates);
 
         }
 
