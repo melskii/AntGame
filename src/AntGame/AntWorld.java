@@ -31,7 +31,9 @@ public class AntWorld {
         int y = c.getY();
         
         antworld[x][y].clearAnt();
-        antworld[x][y].addFood(5);
+        try {
+            antworld[x][y].addFood(5);
+        } catch (Exception e) { String _msg = e.getMessage(); }
     }
     
     public Ant getAnt(Coords c) {
@@ -45,7 +47,7 @@ public class AntWorld {
         int x = c.getX();
         int y = c.getY();
         
-        return (!(antworld[x][y].getAnt == null)); //Ugly because Position has no hasAnt()
+        return (!(antworld[x][y].getAnt() == null)); //Ugly because Position has no hasAnt()
     }
     
     public boolean isSurrounded(Coords c) { //I did this wrong, doesn't check colour doh

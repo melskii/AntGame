@@ -29,6 +29,8 @@ public class Position {
     {
         this.x = x;
         this.y = y;
+        
+        marker = new HashMap<String, Marker>();
     }
    
     
@@ -82,12 +84,12 @@ public class Position {
      */
     public void addFood(int food) throws PositionException
     {
-        if (!this.rocky)
+        if (!this.rocky && food > 0)
         {
             this.food += food;
         }
         else {
-            throw new PositionException("Unable to add food to this position, area is rocky");
+            throw new PositionException("Unable to add food to this position");
         }
     }
     
@@ -172,6 +174,7 @@ public class Position {
         
         if (ant.getColour() == m.getColour())
         {
+          
             if (!marker.containsKey(m.getColour()))
             {
                 marker.put(m.getColour(), m);
@@ -209,16 +212,16 @@ public class Position {
     public HashMap<String, Marker> senseMarkers(Ant a) {
         
         HashMap<String, Marker> m = new HashMap<String, Marker>();
-        String team = ant.getColour();
+        String team = a.getColour();
         String foe = getFoeColour(team);
         
-        if (marker.containsKey(team))
+        if (!marker.isEmpty() && marker.containsKey(team))
         {
             m.put(team, marker.get(team));
         }
         
         //returns a blank Marker for the opposite team if marker is sensed.
-        if (marker.containsKey(foe))
+        if (!marker.isEmpty() && marker.containsKey(foe))
         {
             m.put(foe, new Marker(foe, -1));
         }
@@ -270,7 +273,7 @@ public class Position {
      * @param c Current team colour
      * @return Opposite teams colour
      */
-    public String getFoeColour(String c)
+    private String getFoeColour(String c)
     {
         if (c == "Black")
         {
