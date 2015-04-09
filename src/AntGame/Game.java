@@ -106,6 +106,8 @@ public class Game {
         //Set the other team as the opposite colour
         antbrain2.setColour(antbrain2.getFoeColour());
         
+        
+        
         while (counter >= 0)
         {
             int play = 1;

@@ -20,6 +20,7 @@ public class AntBrain {
     private Graph instructions;
     private LinkedList<Ant> ants;
     private int currentAnt;
+    private int deadCount;
 
 
     /**
@@ -53,6 +54,8 @@ public class AntBrain {
              throw new AntBrainException("Ant Brain not valid: " + e.getMessage());
          }
     
+        
+        
         
          System.out.println(brain.size() + " instructions loaded");
         
@@ -152,7 +155,7 @@ public class AntBrain {
                 }
                 else if (_cond.equals("FoeMarker"))
                 {   
-                    c = new Marker(getFoeColour(), -1);        
+                    c = new FoeMarker();        
                 }
                 else if (_cond.equals("Home"))
                 {   
@@ -364,20 +367,205 @@ public class AntBrain {
     }
     */
     
+    
+    /**
+     * Populate the Ant hill Positions for that team with new Ants
+     */
     public void populateAnts(){
         
+        ArrayList<Position> anthill = antWorld.getAntHill(colour);
+        
+        for (int i = 0; i < anthill.size(); i++)
+        {
+            Ant ant = new Ant(colour);
+            ants.add(ant);
+            
+            try {
+                anthill.get(i).addAnt(ant);
+            }
+            catch (PositionException e) {
+                e.getMessage();
+            }
+        }
         
     }
     
-    public void step(){
+    /**
+     * Calculates the amount of food in AntBrains anthill
+     * @return food in the Anthill
+     */
+    public int getBrainScore()
+    {
+        int score = 0;
+        ArrayList<Position> anthill = antWorld.getAntHill(colour);
         
+        for (int i = 0; i < anthill.size(); i++)
+        {
+            score += anthill.get(i).getFood();
+        }
         
-        
-        
-        
+        return score;
     }
     
-  
+    
+    public void step() 
+    {
+        if (deadCount != ants.size())
+        {
+
+            Ant ant = ants.get(currentAnt++);
+
+            if (!ant.isAlive())
+            {
+                deadCount++;
+                step();
+            }
+            
+            else {
+                
+                if (!ant.resting())
+                {
+                    Instruction state = instructions.getState(ant.getState());
+                    Position antPos = ant.getPosition();
+                    
+                    if (state instanceof ISense)
+                    {
+                        ISense _sense = (ISense)state;
+                        
+                        Position _sensed = antWorld.sensed_cell(antPos, ant.getDirection(), _sense.sensedir);
+                        
+                        if (_sensed.cellMatches(_sense.cond, colour))
+                        {
+                            ant.setState(_sense.state1);
+                        }
+                        else {
+                            ant.setState(_sense.state2);
+                        }
+                        
+                    }
+                    
+                    else if (state instanceof IMark)
+                    {
+                        IMark _mark = (IMark)state;
+                        
+                        try {
+                            antPos.setMarker(_mark.marker);
+                        } 
+                        
+                        catch (Exception e) {
+                            
+                            String _msg = e.getMessage();
+                            System.out.println(_msg);
+                        }
+                        
+                        ant.setState(_mark.state);
+                    }
+                    
+                    else if (state instanceof IUnmark)
+                    {
+                        IUnmark _unmark = (IUnmark) state;
+                        
+                        antPos.clearMarker(_unmark.marker);
+                    }
+                    
+                    else if (state instanceof IPickup)
+                    {
+                        IPickup _pickup = (IPickup) state;
+                        
+                        if (ant.hasFood() || !antPos.hasFood())
+                        {
+                            ant.setState(_pickup.state2);
+                        }
+                        
+                        else {
+                            
+                            try {
+                                antPos.removeFood();
+                                ant.setFood();
+                            } catch (Exception e)
+                            {
+                                String _msg = e.getMessage();
+                                System.out.println(_msg);
+                            }
+                            ant.setState(_pickup.state1);
+                        }
+                    }
+                    
+                    else if (state instanceof IDrop)
+                    {
+                        IDrop _drop = (IDrop) state;
+                        
+                        if (ant.hasFood())
+                        {
+                            antPos.addFood(1);
+                            ant.clearFood();
+                        }
+                        
+                        ant.setState(_drop.state);
+                    }
+                    
+                    else if (state instanceof ITurn)
+                    {
+                        ITurn _turn = (ITurn)state;
+                        ant.turn(_turn.turn);
+                        ant.setState(_turn.state);
+                    }
+                    
+                    else if (state instanceof IMove)
+                    {
+                        IMove _move = (IMove)state;
+                        
+                        Position _newPos = antWorld.adjacentCell(antPos, ant.getDirection());
+                        
+                        if (_newPos.getRocky() || _newPos.getAnt() != null)
+                        {
+                            ant.setState(_move.state2);
+                        }
+                        else {
+                            
+                            antPos.clearAnt();
+                            ant.setPosition(_newPos);
+                            
+                            ant.setState(_move.state1);
+                            ant.updateResting();
+                            
+                            try {
+                                
+                                _newPos.addAnt(ant);
+                                
+                            }
+                            
+                            catch (Exception e)
+                            {
+                                String _msg = e.getMessage();
+                                System.out.println(_msg);
+                            }
+                            
+                            //check_for_surrounded_ants
+                            //come back to this :)
+                            
+                        }
+                    }
+                    
+                    
+                    //come back to this. Look at number theory
+                    else if (state instanceof IFlip)
+                    {
+                        IFlip _flip = (IFlip)state;
+                        
+                        
+                        
+                    }
+                        
+                }
+                else {
+                    ant.updateResting();
+                }
+
+            }
+                    
+        }
+    }
     
     /**
      * Returns the other teams colour
@@ -385,7 +573,7 @@ public class AntBrain {
      * @param c Current team colour
      * @return Opposite teams colour
      */
-    private String getFoeColour()
+    public String getFoeColour()
     {
         if (colour == "Black")
         {

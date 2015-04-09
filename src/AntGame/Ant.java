@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * @author ms660
  */
 package AntGame;
 
@@ -16,6 +15,7 @@ public class Ant {
     private int state;
     private boolean hasFood;
     private boolean alive;
+    private Position position;
     
     /**
      * Class constructor sets the Ant team colour.
@@ -145,6 +145,7 @@ public class Ant {
     {
         if (resting > 0)
         {
+            
             return true;
         }
         
@@ -206,6 +207,24 @@ public class Ant {
         return hasFood;
     }
     
+    /**
+     * Set the current Position for the ant.
+     * 
+     * @param p Position
+     */
+    public void setPosition (Position p)
+    {
+        this.position = p;
+    }
+    
+    /**
+     * Returns the current Position of the ant.
+     * @return the ant's current Position
+     */
+    public Position getPosition()
+    {
+        return position;
+    }
     
     
 }

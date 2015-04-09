@@ -3,7 +3,7 @@
  */
 package AntGame;
 
-import AntGame.Tokens.Marker;
+import AntGame.Tokens.*;
 import AntGame.exceptions.PositionException;
 import java.util.HashMap;
 
@@ -193,11 +193,16 @@ public class Position {
     /**
      * Removes the marker for the ant in the current position.
      */
-    public void clearMarker() {
+    public void clearMarker(Marker m) {
         
         if (marker.containsKey(ant.getColour()))
         {
-            marker.remove(ant.getColour());
+            Marker _m = marker.get(ant.getColour());
+            
+            if (_m.type == m.type)
+            {
+                marker.remove(ant.getColour());
+            }
         }
         
     }   
@@ -266,6 +271,95 @@ public class Position {
             isBlackAntHill = true;
         }
     }
+   
+    
+     public boolean cellMatches (Condition c, String colour)
+     {
+         String team = colour;
+         String foe = getFoeColour(colour);
+         
+         if (c instanceof Friend)
+         {
+             if (ant != null && ant.getColour().equals(team))
+             {
+                 return true;
+             }
+          }
+         
+         else if (c instanceof Foe)
+         {
+             if (ant != null && ant.getColour().equals(foe))
+             {
+                 return true;
+             }
+         }
+         
+         else if (c instanceof FriendWithFood)
+         {
+             if (ant != null && ant.getColour().equals(team) && ant.hasFood())
+             {
+                 return true;
+             }
+         }
+         
+         else if (c instanceof FoeWithFood)
+         {
+             if (ant != null && ant.getColour().equals(foe) && ant.hasFood())
+             {
+                 return true;
+             }
+         }
+         
+         else if (c instanceof Food)
+         {
+             return hasFood();             
+         }
+         
+         else if (c instanceof Rock)
+         {
+             return getRocky();             
+         }
+         
+         else if (c instanceof Marker)
+         {
+             if (!marker.isEmpty() && marker.containsKey(team))
+             {
+                 Marker m = (Marker)c;
+                 
+                 if (m.type == marker.get(team).type)
+                 {
+                    return true;
+                 }
+             }
+         }
+         
+         else if (c instanceof FoeMarker)
+         {
+             if (!marker.isEmpty() && marker.containsKey(team))
+             {
+                 return true;
+             }
+         }
+         
+         else if (c instanceof Home)
+         {
+             if (getAntHill().equals(team))
+             {
+                 return true;
+             }
+         }
+         
+         
+         else if (c instanceof FoeHome)
+         {
+             if (getAntHill().equals(foe))
+             {
+                 return true;
+             }
+         }
+         
+         return false;
+     }
     
     /**
      * Returns the other teams colour
@@ -284,5 +378,7 @@ public class Position {
         }
     }
     
+    
+   
     
 }
