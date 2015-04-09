@@ -4,6 +4,8 @@
  */
 package AntGame;
 
+import java.util.ArrayList;
+
 
 public class AntWorld {
     
@@ -136,4 +138,30 @@ public class AntWorld {
         return new Coords(newX, newY);
         
     }
+
+    /**
+     * Returns the position objects in the anthill
+     * @param colour team colour
+     * @return ArrayList of Positions.
+     */
+    public ArrayList getAntHill (String colour)
+    {
+      
+        ArrayList anthill = new ArrayList();
+        
+        for (int i = 0;  i < antworld.length; i++)
+        {
+            for (int j = 0; i < antworld.length; j++)
+            {
+                if (antworld[i][j].getAntHill() == colour)
+                {
+                    anthill.add(antworld[i][j]);
+                }
+            }      
+        }
+        
+        return anthill;
+            
+    }
+    
 }
