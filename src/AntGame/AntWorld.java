@@ -144,7 +144,7 @@ public class AntWorld {
      * @param colour team colour
      * @return ArrayList of Positions.
      */
-    public ArrayList getAntHill (String colour)
+    public ArrayList<Position> getAntHill (String colour)
     {
       
         ArrayList anthill = new ArrayList();

@@ -14,7 +14,11 @@ public class Game {
     
     
     
-
+    /**
+     * Class Constructor for Game. Creates a Random world and validates each Ant Brain
+     * @param b1 File with Ant Brain for player 1
+     * @param b2 File with Ant Brain for player 2
+     */
     public Game(File b1, File b2) {
       
         AntWorldGenerator gen = new AntWorldGenerator();
@@ -44,6 +48,12 @@ public class Game {
         
     }
     
+    /**
+     * Class Constructor for Game. Validates a Random world and validates each Ant Brain
+     * @param b1 File with an Ant Brain for player 1
+     * @param b2 File with an Ant Brain for player 2
+     * @param w File with an Ant World
+     */
     public Game (File b1, File b2, File w)
     {
         AntWorldGenerator gen = new AntWorldGenerator();
@@ -73,7 +83,11 @@ public class Game {
         
     }
     
-     
+    /**
+     * Assigns each ant brain a colour and runs each game 300,000 turns.
+     * 
+     * @return winning AntBrain
+     */
     public AntBrain runGame(){
         
         int counter = 300000;
@@ -110,8 +124,20 @@ public class Game {
             
            }
         
-        //this needs to be changed to include a calc winner instead of always choosing antbrain1.
-        AntBrain win = antbrain1;
+        int _score1 = antbrain1.getBrainScore();
+        int _score2 = antbrain2.getBrainScore();
+        AntBrain win = null;
+        
+        if (_score1 > _score2)
+        {
+            win = antbrain1;
+        }
+        
+        else if (_score2 > _score1)
+        {
+            win = antbrain2;
+        }
+        
         
         return win;
         
