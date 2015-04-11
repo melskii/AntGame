@@ -5,7 +5,7 @@ import javax.swing.*;
 
 // GUI START (PLAYING WITH SWING) 
 
-public class TestGUI {
+public class TestGUI extends JFrame {
       
 public static void main(String[] args) {  
 
@@ -15,41 +15,43 @@ public static void main(String[] args) {
 
 public void mainFrame()
 {
-    JFrame f=new JFrame();//creating instance of JFrame  
+    //JFrame f=new JFrame(); //create a frame
+    
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-    JButton a=new JButton("Player 1");//creating instance of JButton  
-    a.setBounds(20,20,100, 30);//x axis, y axis, width, height 
+    JButton a=new JButton("Player 1"); 
+    a.setBounds(20,20,100, 30);
 
-    JLabel label  = new JLabel("", JLabel.CENTER);        
-          label.setText("Upload");
-          label.setOpaque(true);
-          label.setBackground(Color.GRAY);
-          label.setForeground(Color.WHITE);
-          //label.
+    JLabel label  = new JLabel("Upload");    
+           label.setText("Upload");
+           label.setOpaque(true);
+           label.setBackground(Color.GRAY);
+           label.setForeground(Color.WHITE);
+           label.setLocation(130,20);
 
-    JButton b=new JButton("Player 2");//creating instance of JButton  
-    b.setBounds(20,70,100, 30);//x axis, y axis, width, height  
+    JButton b=new JButton("Player 2");
+    b.setBounds(20,70,100, 30);
 
-    JButton c=new JButton("Upload Ant World");//creating instance of JButton  
-    c.setBounds(20,130,170, 30);//x axis, y axis, width, height 
+    JButton c=new JButton("Upload Ant World");
+    c.setBounds(20,130,170, 30);
 
-    JButton d=new JButton("Generate Ant World");//creating instance of JButton  
-    d.setBounds(20,180,170, 30);//x axis, y axis, width, height 
+    JButton d=new JButton("Generate Ant World"); 
+    d.setBounds(20,180,170, 30);
 
-    JButton e=new JButton("Run");//creating instance of JButton  
-    e.setBounds(20,230,100, 30);//x axis, y axis, width, height 
+    JButton e=new JButton("Run");  
+    e.setBounds(20,230,100, 30);
 
-    f.add(a); // add a
-    f.add(b);// add b
-    f.add(c); // add c
-    f.add(d); // add d
-    f.add(e);
+    add(a);
+    add(label);
+    add(b);
+    add(c); 
+    add(d); 
+    add(e);
 
-
-
-    f.setSize(400,400);//400 width and 400 height  
-    f.setLayout(null);//using no layout managers  
-    f.setVisible(true);//making the frame visible  
+    setSize(400,400);//400 width and 400 height  
+    setLayout(null);//using no layout managers  
+    //pack();
+    setVisible(true);//making the frame visible  
 }
 
 }  
