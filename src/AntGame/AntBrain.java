@@ -442,6 +442,7 @@ public class AntBrain {
                     {
                         ISense _sense = (ISense)state;
                         
+                        
                         Position _sensed = antWorld.sensed_cell(antPos, ant.getDirection(), _sense.sensedir);
                         
                         if (_sensed.cellMatches(_sense.cond, colour))

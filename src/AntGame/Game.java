@@ -3,6 +3,7 @@
  */
 package AntGame;
 
+import AntGame.exceptions.*;
 import java.io.*;
 import java.util.Random;
 
@@ -57,7 +58,7 @@ public class Game {
      * 
      * @return winning AntBrain
      */
-    public AntBrain runGame(){
+    public AntBrain runGame() throws PositionException, AntException {
         
         int counter = 300000;
         
