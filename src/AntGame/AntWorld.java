@@ -6,7 +6,8 @@ package AntGame;
 
 import java.util.ArrayList;
 import AntGame.Tokens.*;
-
+import AntGame.Exceptions.*;
+import AntGame.exceptions.PositionException;
 
 public class AntWorld {
     
@@ -46,30 +47,80 @@ public class AntWorld {
         return antworld[x][y].getAnt();
     }
     
-    public boolean hasAnt(Coords c) {
-        int x = c.getX();
-        int y = c.getY();
+    public boolean hasAnt(Position p) {
+        int x = p.x;
+        int y = p.y;
         
         return (!(antworld[x][y].getAnt() == null)); //Ugly because Position has no hasAnt()
     }
     
-    public boolean isSurrounded(Coords c) { //I did this wrong, doesn't check colour doh
+    public boolean isSurrounding(Position p, String colour) throws PositionException{
+        boolean surrounding = false;
         
-        boolean surrounded = true;
-        
-        for(int i = 0; i < 6; i++) {
-            Coords p = adjacentCell(c, i);
-            if (!hasAnt(p)) {
-                surrounded = false;
+        for(int j = 0; j < 6; j++){
+            Position search = adjacentCell(p, j);
+            if(hasAnt(search)){
+                Ant potentialKill = search.getAnt();
+                
+                String col = potentialKill.getColour();
+                
+                if(!col.equals(colour)){
+                    Position enemy = potentialKill.getPosition();
+                    isSurrounded(enemy, col);
+                }
             }
-            
+        }
+        
+        return surrounding;
+    }
+    
+    public boolean isSurrounded(Position p, String colour) throws PositionException { //I did this wrong, doesn't check colour doh
+        boolean surrounded = true;
+
+        int i = 0;
+        
+        for(int j = 0; j < 6; j++){
+            while(i < 3){
+                Position search = adjacentCell(p, j);
+                if(!hasAnt(search)){
+                    i++;
+                }
+                
+                else if(i == 2){
+                    surrounded = false;
+                    break;
+                }
+                
+                else if(hasAnt(search)){
+                    Ant surrounding = search.getAnt();
+                    
+                    String surColour = surrounding.getColour();
+                    
+                    if(surColour.equals(colour)){
+                        i++;
+                    }
+                }
+            }
+        }
+        
+        if(surrounded){
+            kill_ant(p);
         }
         return surrounded;
     }
     
-    public Coords adjacentCell(Coords c, int dir){  
-        int x = c.getX();
-        int y = c.getY();
+    public void kill_ant(Position p) throws PositionException{
+        p.clearAnt();
+        Ant killed = p.getAnt();
+        
+        killed.setPosition(null);
+        
+        p.addFood(3);
+    }
+    
+    public Position adjacentCell(Position c, int dir){  
+        int x = c.x;
+        int y = c.y;
         int newX = x;
         int newY = y;
         
@@ -136,7 +187,7 @@ public class AntWorld {
         
         //return antworld[newX][newY];
         
-        return new Coords(newX, newY);
+        return new Position(newX, newY);
         
     }
 
@@ -165,25 +216,42 @@ public class AntWorld {
             
     }
     
-    public Position sensed_cell(Position antPos, int direction, SenseDirection sensedir){
-        Coords antIn = new Coords(antPos.x, antPos.y);
-                
+    public Position sensed_cell(Position antPos, int direction, SenseDirection sensedir) throws PositionException{
         if(sensedir.equals("Here")){
             return antPos;
         }
         
         else if(sensedir.equals("Ahead")){            
-            Coords aheadPos = adjacentCell(antIn, direction);
+            Position aheadPos = adjacentCell(antPos, direction);
             
-            Position ahead = new Position(aheadPos.getX(), aheadPos.getY());
-            
-            return ahead;
+            return aheadPos;
         }
         
+        else if(sensedir.equals("LeftAhead")){
+            if (direction == 0)
+                {
+                    direction = 5;
+                }
+            else {
+                direction = (direction - 1) % 6;
+            }
+            
+            Position laheadPos = adjacentCell(antPos, direction);
+            
+            return laheadPos;
+        }
         
-                
+        else if(sensedir.equals("RightAhead")){
+            direction = (direction + 1) % 6;
+            
+            Position raheadPos = adjacentCell(antPos, direction);
+            
+            return raheadPos;
+        }
         
-        return null;
+        else{
+            throw new PositionException("Ant Could not Sense");
+        }
     }
     
 }
