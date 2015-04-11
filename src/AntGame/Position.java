@@ -10,8 +10,8 @@ import java.util.HashMap;
 
 public class Position {
   
-    private int x;
-    private int y;
+    public int x;
+    public int y;
     private boolean isRedAntHill;
     private boolean isBlackAntHill;
     private int food;
