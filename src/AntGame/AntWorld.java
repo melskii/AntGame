@@ -43,25 +43,27 @@ public class AntWorld {
     }
     
     public boolean hasAnt(Position p) {
-        int x = p.x;
-        int y = p.y;
-        
-        return (!(antworld[x][y].getAnt() == null)); //Ugly because Position has no hasAnt()
+        return (!(p.getAnt() == null)); //Ugly because Position has no hasAnt()
     }
     
     public boolean isSurrounding(Position p, String colour) throws PositionException{
         boolean surrounding = false;
-        
+        System.out.println("Postion Given: " + p);
         for(int j = 0; j < 6; j++){
             Position search = adjacentCell(p, j);
+            
             if(hasAnt(search)){
                 Ant potentialKill = search.getAnt();
                 
                 String col = potentialKill.getColour();
                 
                 if(!col.equals(colour)){
-                    Position enemy = potentialKill.getPosition();
-                    isSurrounded(enemy, col);
+                    System.out.println("Potential Kill Colour: " + col);
+                    Position enemy = search;
+                    System.out.println("Potential Kill At: " + enemy.x + ", " + enemy.y);
+                    if(isSurrounded(enemy, col)){
+                        return true;   
+                    }
                 }
             }
         }
@@ -73,44 +75,62 @@ public class AntWorld {
         boolean surrounded = true;
 
         int i = 0;
+        int surrBy = 0;
+        
+        System.out.println("Given Postion: " + p);
         
         for(int j = 0; j < 6; j++){
-            while(i < 3){
+            while(i < 2){
                 Position search = adjacentCell(p, j);
+                System.out.println("Searching position: " + search.x + "," + search.y);
                 if(!hasAnt(search)){
+                    System.out.println("Didn't have ant: " + i);
                     i++;
+                    j++;
                 }
                 
-                else if(i == 2){
+                else if(i == 1){
                     surrounded = false;
                     break;
                 }
                 
                 else if(hasAnt(search)){
                     Ant surrounding = search.getAnt();
+                    System.out.println("Position has ant: " + surrounding.getColour());
                     
                     String surColour = surrounding.getColour();
                     
                     if(surColour.equals(colour)){
                         i++;
+                        j++;
                     }
+                    
+                    else{
+                        surrBy++;
+                        if(surrBy == 5){
+                            System.out.println("ant surrounded");
+                            kill_ant(p);
+                            return true;                            
+                        }
+                    }
+                    
+                    break;
                 }
             }
         }
         
-        if(surrounded){
-            kill_ant(p);
-        }
         return surrounded;
     }
     
     public void kill_ant(Position p) throws PositionException{
-        p.clearAnt();
-        Ant killed = p.getAnt();
+        Position kill = p;
         
+        Ant killed = kill.getAnt();
+        kill.clearAnt();
+                
         killed.setPosition(null);
         
-        p.addFood(3);
+        kill.addFood(3);
     }
     
     public Position adjacentCell(Position c, int dir){  
@@ -119,8 +139,7 @@ public class AntWorld {
         int newX = x;
         int newY = y;
         
-        switch(dir){
-            
+        switch(dir){            
             case 0:
                 newX = x + 1;
                 newY = y;
@@ -180,9 +199,8 @@ public class AntWorld {
                 }
         }
         
-        //return antworld[newX][newY];
+        return antworld[newX][newY];
         
-        return new Position(newX, newY);
         
     }
 
@@ -192,8 +210,7 @@ public class AntWorld {
      * @return ArrayList of Positions.
      */
     public ArrayList<Position> getAntHill (String colour)
-    {
-      
+    {      
         ArrayList anthill = new ArrayList();
         
         for (int i = 0;  i < antworld.length; i++)
@@ -212,17 +229,18 @@ public class AntWorld {
     }
     
     public Position sensed_cell(Position antPos, int direction, SenseDirection sensedir) throws PositionException{
-        if(sensedir.equals("Here")){
+        if(sensedir instanceof Here){
+            System.out.println("sense was here");
             return antPos;
         }
         
-        else if(sensedir.equals("Ahead")){            
+        else if(sensedir instanceof Ahead){            
             Position aheadPos = adjacentCell(antPos, direction);
             
             return aheadPos;
         }
         
-        else if(sensedir.equals("LeftAhead")){
+        else if(sensedir instanceof LeftAhead){
             if (direction == 0)
                 {
                     direction = 5;
@@ -236,7 +254,7 @@ public class AntWorld {
             return laheadPos;
         }
         
-        else if(sensedir.equals("RightAhead")){
+        else if(sensedir instanceof RightAhead){
             direction = (direction + 1) % 6;
             
             Position raheadPos = adjacentCell(antPos, direction);
