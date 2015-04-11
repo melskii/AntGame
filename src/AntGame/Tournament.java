@@ -13,14 +13,14 @@ import java.util.HashMap;
 
 public class Tournament {
     ArrayList<Integer> playerNo = new ArrayList<>();
-    ArrayList<File> brains = new ArrayList<>();
+    ArrayList<AntBrain> brains = new ArrayList<>();
     ArrayList<Integer> score = new ArrayList<>();
     HashMap played = new HashMap();
     
-    public Tournament(File[] uploaded){
+    public Tournament(AntBrain[] uploaded){
         int i =0;
         
-        for(File b : uploaded){
+        for(AntBrain b : uploaded){
             brains.add(b);
             playerNo.add(i);
             score.add(0);
@@ -29,7 +29,7 @@ public class Tournament {
         }
     }
     
-    public File runTournament() throws PositionException, AntException{
+    public AntBrain runTournament() throws PositionException, AntException{
         int playerX = 0;
         int playerY = playerX + 1;
 
@@ -55,7 +55,7 @@ public class Tournament {
         
         int highestScore = Collections.max(score);
         int owner = brains.indexOf(highestScore);
-        File finalWinner = brains.get(owner);
+        AntBrain finalWinner = brains.get(owner);
 
         return finalWinner;
     }
