@@ -164,4 +164,12 @@ public class AntWorld {
             
     }
     
+    
+    //sensed_cell (antPos, ant.getDirection(), _sense.sensedir); returns position class line 434 of antbrain
+    //void check_for_surrounded_ants (Position, COLOUR)
+    //void kill_ant - ant.setPosition(null);
+    //Position.setAnt(null);
+    
+
+    
 }

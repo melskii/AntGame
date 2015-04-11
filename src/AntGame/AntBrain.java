@@ -301,7 +301,7 @@ public class AntBrain {
             }
             
             else {
-             
+                    
                  throw new AntBrainException("Line " + (j+1) + " not a valid instruction (" + inst + ")");
                 
             }
@@ -497,8 +497,13 @@ public class AntBrain {
                         
                         if (ant.hasFood())
                         {
-                            antPos.addFood(1);
-                            ant.clearFood();
+                            
+                            try {
+                                antPos.addFood(1);
+                                ant.clearFood();
+                            } catch (Exception e) {
+                                String _msg = e.getMessage();
+                            } 
                         }
                         
                         ant.setState(_drop.state);
