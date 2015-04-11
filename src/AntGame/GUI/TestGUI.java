@@ -25,9 +25,11 @@ public void mainFrame()
     JLabel label  = new JLabel("Upload");    
            label.setText("Upload");
            label.setOpaque(true);
+           label.setVisible(true);
            label.setBackground(Color.GRAY);
            label.setForeground(Color.WHITE);
            label.setLocation(130,20);
+           label.setSize(50, 30);
 
     JButton b=new JButton("Player 2");
     b.setBounds(20,70,100, 30);
@@ -47,10 +49,9 @@ public void mainFrame()
     add(c); 
     add(d); 
     add(e);
-
+    
     setSize(400,400);//400 width and 400 height  
     setLayout(null);//using no layout managers  
-    //pack();
     setVisible(true);//making the frame visible  
 }
 
