@@ -15,7 +15,7 @@ public static void main(String[] args) {
 
 public void mainFrame()
 {
-    //JFrame f=new JFrame(); //create a frame
+    
     
     setDefaultCloseOperation(EXIT_ON_CLOSE);
 
