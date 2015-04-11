@@ -408,7 +408,7 @@ public class AntBrain {
     }
     
     
-    public void step() 
+    public void step() throws PositionException, AntException
     {
         if (deadCount != ants.size())
         {
@@ -431,6 +431,7 @@ public class AntBrain {
                     if (state instanceof ISense)
                     {
                         ISense _sense = (ISense)state;
+                        
                         
                         Position _sensed = antWorld.sensed_cell(antPos, ant.getDirection(), _sense.sensedir);
                         

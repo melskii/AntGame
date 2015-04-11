@@ -6,7 +6,6 @@ package AntGame;
 
 import java.util.ArrayList;
 import AntGame.Tokens.*;
-import AntGame.Exceptions.*;
 import AntGame.exceptions.PositionException;
 
 public class AntWorld {
@@ -16,6 +15,12 @@ public class AntWorld {
     public AntWorld(int x, int y) {   //might be better to have a contructor with antworld[][] parameter to be passed from generator already made rocky etc 
         
         antworld = new Position[x][y];
+        
+        for(int i = 0; i < x; i++){
+            for(int j = 0; j < y; j++){
+                antworld[i][j] = new Position(i,j);
+            }
+        }
         
     }
     
@@ -29,17 +34,7 @@ public class AntWorld {
         
         return antworld[x][y];
     }
-    
-    public void killAnt(Coords c) {
-        int x = c.getX();
-        int y = c.getY();
         
-        antworld[x][y].clearAnt();
-        try {
-            antworld[x][y].addFood(5);
-        } catch (Exception e) { String _msg = e.getMessage(); }
-    }
-    
     public Ant getAnt(Coords c) {
         int x = c.getX();
         int y = c.getY();

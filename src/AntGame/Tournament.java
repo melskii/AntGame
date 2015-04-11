@@ -4,21 +4,23 @@
  */
 package AntGame;
 
+import AntGame.exceptions.*;
 import java.util.ArrayList;
+import java.io.*;
 import java.util.Collections;
 import java.util.HashMap;
 
 
 public class Tournament {
     ArrayList<Integer> playerNo = new ArrayList<>();
-    ArrayList<AntBrain> brains = new ArrayList<>();
+    ArrayList<File> brains = new ArrayList<>();
     ArrayList<Integer> score = new ArrayList<>();
     HashMap played = new HashMap();
     
-    public void Tournament(AntBrain[] uploaded){
+    public Tournament(File[] uploaded){
         int i =0;
         
-        for(AntBrain b : uploaded){
+        for(File b : uploaded){
             brains.add(b);
             playerNo.add(i);
             score.add(0);
@@ -27,7 +29,7 @@ public class Tournament {
         }
     }
     
-    public AntBrain runTournament() {
+    public File runTournament() throws PositionException, AntException{
         int playerX = 0;
         int playerY = playerX + 1;
 
@@ -47,12 +49,13 @@ public class Tournament {
             
             else{
                 playerX++;
+                playerY = playerX+1;
             }   
         }    
         
         int highestScore = Collections.max(score);
         int owner = brains.indexOf(highestScore);
-        AntBrain finalWinner = brains.get(owner);
+        File finalWinner = brains.get(owner);
 
         return finalWinner;
     }
