@@ -5,6 +5,7 @@
 package AntGame;
 
 import java.util.ArrayList;
+import AntGame.Tokens.*;
 
 
 public class AntWorld {
@@ -162,6 +163,27 @@ public class AntWorld {
         
         return anthill;
             
+    }
+    
+    public Position sensed_cell(Position antPos, int direction, SenseDirection sensedir){
+        Coords antIn = new Coords(antPos.x, antPos.y);
+                
+        if(sensedir.equals("Here")){
+            return antPos;
+        }
+        
+        else if(sensedir.equals("Ahead")){            
+            Coords aheadPos = adjacentCell(antIn, direction);
+            
+            Position ahead = new Position(aheadPos.getX(), aheadPos.getY());
+            
+            return ahead;
+        }
+        
+        
+                
+        
+        return null;
     }
     
 }
