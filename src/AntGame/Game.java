@@ -15,71 +15,40 @@ public class Game {
     
     
     /**
-     * Class Constructor for Game. Creates a Random world and validates each Ant Brain
-     * @param b1 File with Ant Brain for player 1
-     * @param b2 File with Ant Brain for player 2
+     * Class Constructor for Game. 
+     * @param b1 Ant Brain for player 1
+     * @param b2 Ant Brain for player 2
      */
-    public Game(File b1, File b2) {
+    public Game(AntBrain b1, AntBrain b2) {
       
         AntWorldGenerator gen = new AntWorldGenerator();
         world = gen.antWorldGenerator(false);
         
         
-        try {
-            antbrain1 = new AntBrain(b1);
-            antbrain2 = new AntBrain(b2);
-            
-        }
         
-        catch (Exception e) {
+        antbrain1 = b1;
+        antbrain2 = b2;
             
-            String _msg;
-            
-            if (e instanceof IOException)
-            {
-                _msg = "File Error: Please try uploading the file again";
-            }
-            else {
-                _msg = e.getMessage();
-            }
-            
-            System.out.println(_msg);
-        }
+       
         
     }
     
     /**
-     * Class Constructor for Game. Validates a Random world and validates each Ant Brain
-     * @param b1 File with an Ant Brain for player 1
-     * @param b2 File with an Ant Brain for player 2
-     * @param w File with an Ant World
+     * Class Constructor for Game. 
+     * @param b1 Ant Brain for player 1
+     * @param b2 Ant Brain for player 2
+     * @param w Ant World
      */
-    public Game (File b1, File b2, File w)
+    public Game (AntBrain b1, AntBrain b2, AntWorld w)
     {
         AntWorldGenerator gen = new AntWorldGenerator();
         
-        String world = null;
-        
-        try {
-        
-            BufferedReader br = new BufferedReader(new FileReader(w));
-        
-            String line = null;
-
-            while ((line = br.readLine()) != null) {
-
-                world += line;
-                
-            }
-        }
-        catch (IOException io)
-        {
-            String _msg = io.getMessage();
-        }
+        antbrain1 = b1;
+        antbrain2 = b2;
         
         System.out.println(world);
          
-        this.world = gen.antWorldGenerator(world, false);
+        this.world = w;
         
     }
     
