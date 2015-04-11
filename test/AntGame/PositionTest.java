@@ -2,6 +2,7 @@
 package AntGame;
 
 import AntGame.Tokens.Marker;
+import AntGame.Tokens.*;
 import AntGame.exceptions.*;
 import java.util.HashMap;
 import org.junit.After;
@@ -344,7 +345,7 @@ public class PositionTest {
         try {
             instance.addAnt(a);
             instance.setMarker(m);
-            instance.clearMarker();
+            instance.clearMarker(m);
         } catch (Exception e) { String _msg = e.getMessage(); }
         
         HashMap<String, Marker> markers = instance.senseMarkers(a);
