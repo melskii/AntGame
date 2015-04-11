@@ -6,6 +6,7 @@ import AntGame.exceptions.*;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.io.*;
+import java.util.Random;
 
 
 
@@ -60,6 +61,15 @@ public class AntBrain {
          System.out.println(brain.size() + " instructions loaded");
         
 
+    }
+
+    /**
+     * 
+     * @return Returns text for the label in the GUI
+     */
+    public String getBrainLabel()
+    {
+        return instructions.size() + " instructions loaded";
     }
 
     /**
@@ -408,7 +418,7 @@ public class AntBrain {
     }
     
     
-    public void step() 
+    public void step() throws AntException, PositionException
     {
         if (deadCount != ants.size())
         {
@@ -512,7 +522,13 @@ public class AntBrain {
                     else if (state instanceof ITurn)
                     {
                         ITurn _turn = (ITurn)state;
+                        
+                        try {
                         ant.turn(_turn.turn);
+                        }
+                        catch (Exception e) {
+                            String _msg = e.getMessage();
+                        }
                         ant.setState(_turn.state);
                     }
                     
@@ -546,8 +562,9 @@ public class AntBrain {
                                 System.out.println(_msg);
                             }
                             
-                            //check_for_surrounded_ants
-                            //come back to this :)
+                            
+                            antWorld.isSurrounding(antPos, ant.getColour());
+                            
                             
                         }
                     }
@@ -558,9 +575,24 @@ public class AntBrain {
                     {
                         IFlip _flip = (IFlip)state;
                         
+                        Random ran = new Random();
                         
+                        if (ran.nextInt() == 0)
+                        {
+                            ant.setState(_flip.state1);
+                        }
                         
+                        else {
+                            
+                            ant.setState(_flip.state2);
+                            
                     }
+                        
+                        
+                        
+                        
+                        
+                }
                         
                 }
                 else {

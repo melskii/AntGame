@@ -79,5 +79,15 @@ public class Graph {
         return next;
         
     }
+    
+    /**
+     * Returns the size of the instructions.
+     * @return the size of the instructions
+     */
+    public int size()
+    {
+        return vertex.size();
+                
+    }
 
 }
