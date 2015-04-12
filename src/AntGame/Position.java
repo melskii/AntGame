@@ -172,7 +172,7 @@ public class Position {
      */
     public void setMarker(Marker m) throws PositionException {
         
-        if (ant.getColour() == m.getColour())
+        if (ant.getColour().equals(m.getColour()))
         {
           
             if (!marker.containsKey(m.getColour()))
@@ -262,11 +262,11 @@ public class Position {
      */
     public void setAntHill(String colour)
     {
-        if (colour == "Red" && !isBlackAntHill)
+        if ("Red".equals(colour) && !isBlackAntHill)
         {
             isRedAntHill = true;
         }
-        else if (colour == "Black" && !isRedAntHill)
+        else if ("Black".equals(colour) && !isRedAntHill)
         {
             isBlackAntHill = true;
         }
@@ -380,7 +380,7 @@ public class Position {
      */
     private String getFoeColour(String c)
     {
-        if (c == "Black")
+        if ("Black".equals(c))
         {
             return "Red";
         }
