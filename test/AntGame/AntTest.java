@@ -310,4 +310,26 @@ public class AntTest {
         assertFalse(result);
     }
     
+    /*
+     * Test that ant starts facing east and have no food
+     */
+    @Test
+    public void testAntFacingEastAndNoFood()
+    {
+        System.out.println("-------- Is the ant facing east and has no food when first initialised --------");
+        
+        Ant instance = new Ant("Black");
+        
+        int dir = instance.getDirection();
+        
+        //facing east
+        assertEquals (dir, 0);
+        
+        boolean hasfood = instance.hasFood();
+        
+        assertFalse(hasfood);
+        
+        
+    }
+    
 }
