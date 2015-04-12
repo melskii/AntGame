@@ -123,12 +123,17 @@ public class AntBrainTest {
         File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample.ant");
         AntBrain instance = new AntBrain(f);
         
-        instance.setAntWorld(new AntWorld(10,10));
+        AntWorld w = new AntWorld(10,10);
+        w.getPosition(3, 3).setAntHill("Red");
+        
+        instance.setAntWorld(w);
         
         instance.setColour("Red");
         
         instance.populateAnts();
         
+        
+        assertEquals(w.getPosition(3, 3).getAnt().getColour(), instance.getColour());
        
     }
     
