@@ -11,10 +11,16 @@ import AntGame.exceptions.PositionException;
 public class AntWorld {
     
     Position[][] antworld;
+    int xlength;
+    int ylength;
+    
     
     public AntWorld(int x, int y) {   //might be better to have a contructor with antworld[][] parameter to be passed from generator already made rocky etc 
         
         antworld = new Position[x][y];
+        
+        xlength = x;
+        ylength = y;
         
         for(int i = 0; i < x; i++){
             for(int j = 0; j < y; j++){
@@ -52,7 +58,7 @@ public class AntWorld {
         for(int j = 0; j < 6; j++){
             Position search = adjacentCell(p, j);
             
-            if(hasAnt(search)){
+            if(search != null && hasAnt(search)){
                 Ant potentialKill = search.getAnt();
                 
                 String col = potentialKill.getColour();
@@ -199,7 +205,12 @@ public class AntWorld {
                 }
         }
         
-        return antworld[newX][newY];
+        if (newX < xlength && newY < ylength && newX > 0 && newY > 0)
+        {
+            return antworld[newX][newY];
+        }
+        
+        return null;
         
         
     }
@@ -213,9 +224,11 @@ public class AntWorld {
     {      
         ArrayList anthill = new ArrayList();
         
-        for (int i = 0;  i < antworld.length; i++)
+        System.out.println(antworld.length);
+        
+        for (int i = 0;  i < xlength; i++)
         {
-            for (int j = 0; i < antworld.length; j++)
+            for (int j = 0; j < ylength; j++)
             {
                 if (antworld[i][j].getAntHill() == colour)
                 {
@@ -237,7 +250,13 @@ public class AntWorld {
         else if(sensedir instanceof Ahead){            
             Position aheadPos = adjacentCell(antPos, direction);
             
-            return aheadPos;
+            if (aheadPos != null)
+            {
+                return aheadPos;
+            }
+            else {
+                throw new PositionException("Trying to sense outside the boundaries");
+            }
         }
         
         else if(sensedir instanceof LeftAhead){
@@ -251,7 +270,13 @@ public class AntWorld {
             
             Position laheadPos = adjacentCell(antPos, direction);
             
-            return laheadPos;
+            if (laheadPos != null)
+            {
+                return laheadPos;
+            }
+            else {
+                throw new PositionException("Trying to sense outside the boundaries");
+            }
         }
         
         else if(sensedir instanceof RightAhead){
@@ -259,7 +284,13 @@ public class AntWorld {
             
             Position raheadPos = adjacentCell(antPos, direction);
             
-            return raheadPos;
+            if (raheadPos != null)
+            {
+                return raheadPos;
+            }
+            else {
+                throw new PositionException("Trying to sense outside the boundaries");
+            }
         }
         
         else{

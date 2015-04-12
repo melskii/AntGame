@@ -55,7 +55,7 @@ public class AntBrain {
              throw new AntBrainException("Ant Brain not valid: " + e.getMessage());
          }
     
-        
+        ants = new LinkedList<Ant>();
         
         
          System.out.println(brain.size() + " instructions loaded");
@@ -388,9 +388,12 @@ public class AntBrain {
         for (int i = 0; i < anthill.size(); i++)
         {
             Ant ant = new Ant(colour);
-            ants.add(ant);
             
-            try {
+            ants.add(ant);
+            ant.setPosition(anthill.get(i));
+            
+            try 
+            {
                 anthill.get(i).addAnt(ant);
             }
             catch (PositionException e) {
@@ -420,32 +423,60 @@ public class AntBrain {
     
     public void step() throws AntException, PositionException
     {
+        
+        
+        
+        
         if (deadCount != ants.size())
         {
 
-            Ant ant = ants.get(currentAnt++);
+            Ant ant = ants.get(currentAnt);
+            
 
             if (!ant.isAlive())
             {
+                System.out.println("Step");
+                System.out.println(": Ant Dead");
+                
                 deadCount++;
                 step();
+                
             }
             
             else {
+                
+                System.out.println("Step (Ant: " + currentAnt + " State: " + ants.get(currentAnt).getState() + " Direction: " + ants.get(currentAnt).getDirection() + ")" );
                 
                 if (!ant.resting())
                 {
                     Instruction state = instructions.getState(ant.getState());
                     Position antPos = ant.getPosition();
                     
+                    System.out.println(antPos);
+                    
                     if (state instanceof ISense)
                     {
+                        
                         ISense _sense = (ISense)state;
                         
+                        System.out.println(": State Sense " + _sense.sensedir.getClass());
                         
-                        Position _sensed = antWorld.sensed_cell(antPos, ant.getDirection(), _sense.sensedir);
+                        System.out.println("pos: " + antPos);
                         
-                        if (_sensed.cellMatches(_sense.cond, colour))
+                        Position _sensed = null;
+                        
+                        try {
+                            _sensed = antWorld.sensed_cell(antPos, ant.getDirection(), _sense.sensedir);
+                        } catch (PositionException e)
+                        {
+                            System.out.println(e.getMessage());
+                        }
+                        
+                        if (_sensed != null) {
+                            System.out.println(_sensed.toString());
+                        }
+                        
+                        if (_sensed != null && _sensed.cellMatches(_sense.cond, colour))
                         {
                             ant.setState(_sense.state1);
                         }
@@ -457,6 +488,9 @@ public class AntBrain {
                     
                     else if (state instanceof IMark)
                     {
+                        
+                        System.out.println(": State Mark");
+                        
                         IMark _mark = (IMark)state;
                         
                         try {
@@ -474,13 +508,19 @@ public class AntBrain {
                     
                     else if (state instanceof IUnmark)
                     {
+                        System.out.println(": State Unmark");
+                        
                         IUnmark _unmark = (IUnmark) state;
                         
                         antPos.clearMarker(_unmark.marker);
+                        
+                        ant.setState(_unmark.state);
                     }
                     
                     else if (state instanceof IPickup)
                     {
+                        System.out.println(": State Pickup");
+                        
                         IPickup _pickup = (IPickup) state;
                         
                         if (ant.hasFood() || !antPos.hasFood())
@@ -504,6 +544,8 @@ public class AntBrain {
                     
                     else if (state instanceof IDrop)
                     {
+                        System.out.println(": State Drop");
+                        
                         IDrop _drop = (IDrop) state;
                         
                         if (ant.hasFood())
@@ -522,6 +564,8 @@ public class AntBrain {
                     
                     else if (state instanceof ITurn)
                     {
+                        System.out.println(": State Turn");
+                        
                         ITurn _turn = (ITurn)state;
                         
                         try {
@@ -535,11 +579,19 @@ public class AntBrain {
                     
                     else if (state instanceof IMove)
                     {
+                        System.out.println(": State Move");
+                        
                         IMove _move = (IMove)state;
+                        
+                        System.out.println(antPos);
+                        System.out.println(ant.getDirection());
                         
                         Position _newPos = antWorld.adjacentCell(antPos, ant.getDirection());
                         
-                        if (_newPos.getRocky() || _newPos.getAnt() != null)
+                        
+                        System.out.println("new pos: " + _newPos);
+                        
+                        if (_newPos == null || (_newPos.getRocky() || _newPos.getAnt() != null))
                         {
                             ant.setState(_move.state2);
                         }
@@ -564,7 +616,10 @@ public class AntBrain {
                             }
                             
                             
-                            antWorld.isSurrounding(antPos, ant.getColour());
+                            if (antWorld.isSurrounding(antPos, ant.getColour()))
+                            {
+                                System.out.println(": Killed an ant");
+                            }
                             
                             
                         }
@@ -574,11 +629,13 @@ public class AntBrain {
                     //come back to this. Look at number theory
                     else if (state instanceof IFlip)
                     {
+                        System.out.println(": State Flip");
+                        
                         IFlip _flip = (IFlip)state;
                         
                         Random ran = new Random();
                         
-                        if (ran.nextInt() == 0)
+                        if (ran.nextInt(_flip.flip) == 0)
                         {
                             ant.setState(_flip.state1);
                         }
@@ -597,9 +654,14 @@ public class AntBrain {
                         
                 }
                 else {
+                    
+                    System.out.println(": Ant Resting");
+                    
                     ant.updateResting();
                 }
-
+               
+                currentAnt = ((currentAnt+1) % ants.size());
+               
             }
                     
         }

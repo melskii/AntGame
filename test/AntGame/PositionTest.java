@@ -441,6 +441,25 @@ public class PositionTest {
       
     }
 
+    /**
+     * Test of toString method, of class Position.
+     */
+    @Test
+    public void testToString() throws Exception {
+        
+        System.out.println("-------- toString() --------");
+        
+        Position instance = new Position(1, 1);
+        instance.addFood(2);
+        instance.addAnt(new Ant("Red"));
+        
+       
+        instance.setAntHill("Black");
+       
+        System.out.println(instance.toString());
+        
+        
+    }
     
 
     

@@ -144,7 +144,7 @@ public class Position {
         
             ant = null;
             food = 0;
-            marker = null;
+            
         }
         else 
         {
@@ -275,6 +275,9 @@ public class Position {
     
      public boolean cellMatches (Condition c, String colour)
      {
+         System.out.println(c);
+         System.out.println(colour);
+         
          String team = colour;
          String foe = getFoeColour(colour);
          
@@ -322,6 +325,11 @@ public class Position {
          
          else if (c instanceof Marker)
          {
+             System.out.println("hit here: friend");
+             System.out.println(marker);
+             
+             System.out.println(marker.isEmpty());
+             
              if (!marker.isEmpty() && marker.containsKey(team))
              {
                  Marker m = (Marker)c;
@@ -335,7 +343,10 @@ public class Position {
          
          else if (c instanceof FoeMarker)
          {
-             if (!marker.isEmpty() && marker.containsKey(team))
+             System.out.println("hit here: foe");
+             
+             System.out.println(marker.isEmpty());
+             if (!marker.isEmpty() && marker.containsKey(foe))
              {
                  return true;
              }
@@ -343,7 +354,7 @@ public class Position {
          
          else if (c instanceof Home)
          {
-             if (getAntHill().equals(team))
+             if (getAntHill() != null && getAntHill().equals(team))
              {
                  return true;
              }
@@ -352,7 +363,7 @@ public class Position {
          
          else if (c instanceof FoeHome)
          {
-             if (getAntHill().equals(foe))
+             if (getAntHill() != null && getAntHill().equals(foe))
              {
                  return true;
              }
@@ -376,6 +387,63 @@ public class Position {
         else {
             return "Black";
         }
+    }
+    
+    /**
+     * Overwrites the toString() method returning the Position description 
+     * @return String
+     */
+    @Override
+    public String toString()
+    {
+        String _position = "Position (" + x + ", " + y + "). ";
+
+        
+        if (getRocky())
+        {
+            _position += "Rocky Area";
+        }
+        
+        else {
+         
+            if (getAntHill() != null)
+            {
+                _position += getAntHill() + " Ant Hill. ";
+            }
+            
+            if (getAnt() != null)
+            {
+                _position += getAnt().getColour() + " Ant. ";
+                
+                if (getAnt().hasFood())
+                {
+                    _position += " (carrrying food). ";
+                }
+                        
+            }
+            
+            if (hasFood())
+            {
+                _position += "Position has food. ";
+            }
+            
+            if (!marker.isEmpty())
+            {
+                if (marker.containsKey("Red"))
+                {
+                    _position += "Red marker: " + marker.get("Red").type + ". ";
+                }
+                if (marker.containsKey("Black")) 
+                {
+                    _position += "Black marker: " + marker.get("Black").type + ". ";
+                }
+            }
+            
+            
+            
+        }
+        
+        return _position;
     }
     
     
