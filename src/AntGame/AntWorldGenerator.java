@@ -15,7 +15,9 @@ import java.util.Random;
 public class AntWorldGenerator {
     
     
-    AntWorld antWorld;
+    private AntWorld antWorld;
+    public int x;
+    public int y;
     
     public AntWorld antWorldGenerator(File a) throws IOException, AntWorldGeneratorException, PositionException  
     {
@@ -35,8 +37,9 @@ public class AntWorldGenerator {
         String secondLine = world.get(1);
         
         try {
-            int x = Integer.parseInt(firstLine);
-            int y = Integer.parseInt(secondLine);
+            
+            x = Integer.parseInt(firstLine);
+            y = Integer.parseInt(secondLine);
             antWorld = new AntWorld(x, y);
             
         } catch (NumberFormatException e) {
@@ -270,4 +273,6 @@ public class AntWorldGenerator {
         
         return antWorld;
     }
+    
+    
 }

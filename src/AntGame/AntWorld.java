@@ -88,6 +88,9 @@ public class AntWorld {
         for(int j = 0; j < 6; j++){
             while(i < 2){
                 Position search = adjacentCell(p, j);
+                
+                System.out.println("Search");
+                System.out.println(search);
                 System.out.println("Searching position: " + search.x + "," + search.y);
                 if(!hasAnt(search)){
                     System.out.println("Didn't have ant: " + i);
@@ -182,13 +185,19 @@ public class AntWorld {
                 
             case 4:
                 if (y % 2 == 0) {
+                    
+                    System.out.println("if");
                     newX = x - 1;
                     newY = y -1;
                     break;
                 }
                 else {
+                    
+                    System.out.println("else");
                     newX = x;
                     newY = y - 1;
+                    
+                    System.out.println(newX + ", " + newY);
                     break;
                 }
                 
@@ -205,7 +214,7 @@ public class AntWorld {
                 }
         }
         
-        if (newX < xlength && newY < ylength && newX > 0 && newY > 0)
+        if (newX < xlength && newY < ylength && newX >= 0 && newY >= 0)
         {
             return antworld[newX][newY];
         }
