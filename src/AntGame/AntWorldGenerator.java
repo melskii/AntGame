@@ -44,7 +44,7 @@ public class AntWorldGenerator {
             
         } catch (NumberFormatException e) {
             
-            throw new AntWorldGeneratorException("World file not valid: " + e.getMessage());
+            throw new AntWorldGeneratorException("First two lines must be integers only");
         }
         
         world.remove(0);
@@ -53,18 +53,19 @@ public class AntWorldGenerator {
         boolean even = true;
         
         for (int y = 0; y < world.size(); y++) {
+            
             even = (y % 2 == 0);
+            
             line = world.get(y);
             StringBuilder sb = new StringBuilder(line);
             int x = 0;
             char position;
             
+            
             while(line.length() > 0) {
                 
                 
                 position = line.charAt(0);
-                
-                //System.out.println(position);
                 
                 if (!even) {
                     if(!Character.isWhitespace(position)) {
@@ -77,11 +78,9 @@ public class AntWorldGenerator {
                             continue;
                         }
                         position = line.charAt(0);
-                    }
-                        
-                    
+                    }  
                 }
-                
+                      
                 if (x == 0) {
                     if (position == '#') {
                         try {
@@ -157,10 +156,6 @@ public class AntWorldGenerator {
     
     public AntWorld antWorldGenerator(boolean tournament)
     {
-        
-        
-        if (tournament)
-        {
             antWorld = new AntWorld(150, 150);
             
             //rocky perimeter
@@ -189,17 +184,7 @@ public class AntWorldGenerator {
 //            antWorld = foodGen(antWorld, x, y, d); //to be done 11 times
             
             //make 14 rocks
-            
-            
-                
-        }
-        
-        else 
-        {
-            Random size = new Random();
-            
-            antWorld = new AntWorld(size.nextInt(250), size.nextInt(250));
-        }
+
         
         return antWorld;
         
