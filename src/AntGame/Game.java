@@ -13,6 +13,7 @@ public class Game {
     AntBrain antbrain2;
     AntWorld world;
     
+    int counter = 300000;
     
     
     /**
@@ -60,7 +61,7 @@ public class Game {
      */
     public AntBrain runGame() throws PositionException, AntException {
         
-        int counter = 300000;
+        counter = 300000;
         
         antbrain1.setAntWorld(world);
         antbrain2.setAntWorld(world);
@@ -94,7 +95,7 @@ public class Game {
             
             counter--;
             
-           }
+        }
         
         int _score1 = antbrain1.getBrainScore();
         int _score2 = antbrain2.getBrainScore();
@@ -115,6 +116,11 @@ public class Game {
         
         
         
+    }
+    
+    public int getRemainingMoves()
+    {
+        return counter;
     }
     
 }
