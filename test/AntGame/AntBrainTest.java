@@ -33,7 +33,7 @@ public class AntBrainTest {
     /**
      * Test of the AntBrain constructor method, of class AntBrain.
      */
-    @Test
+    //@Test
     public void testAntBrainConstructor() throws Exception {
         System.out.println("-------- AntBrain() --------");
       
@@ -46,7 +46,7 @@ public class AntBrainTest {
     /**
      * Test of validAntBrain method, of class AntBrain.
      */
-    @Test
+    //@Test
     public void testValidAntBrain() throws Exception {
         
         System.out.println("-------- validAntBrain() : valid --------");
@@ -87,73 +87,138 @@ public class AntBrainTest {
         
     }
 
-    /**
-     * Test of setAntWorld method, of class AntBrain.
-     */
-    //@Test
-    public void testSetAntWorld() {
-        System.out.println("setAntWorld");
-        AntWorld world = null;
-        AntBrain instance = null;
-        instance.setAntWorld(world);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
-    
-    
-    
-
+      
     /**
      * Test of setColour method, of class AntBrain.
      */
     //@Test
-    public void testSetColour() {
-        System.out.println("setColour");
-        String c = "";
-        AntBrain instance = null;
+    public void testSetAndGetColour() throws Exception {
+        
+        System.out.println("-------- setColour() & getColour() --------");
+        
+        String c = "Red";
+        
+        File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample.ant");
+        AntBrain instance = new AntBrain(f);
+        
+        instance.setAntWorld(new AntWorld(10,10));
+        
         instance.setColour(c);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getColour method, of class AntBrain.
-     */
-    //@Test
-    public void testGetColour() {
-        System.out.println("getColour");
-        AntBrain instance = null;
-        String expResult = "";
         String result = instance.getColour();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        assertEquals(result, c);
+        
     }
 
     /**
      * Test of populateAnts method, of class AntBrain.
      */
     //@Test
-    public void testPopulateAnts() {
-        System.out.println("populateAnts");
-        AntBrain instance = null;
+    public void testPopulateAnts() throws Exception {
+        
+        System.out.println("-------- populateAnts() --------");
+        
+        
+        
+        File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample.ant");
+        AntBrain instance = new AntBrain(f);
+        
+        instance.setAntWorld(new AntWorld(10,10));
+        
+        instance.setColour("Red");
+        
         instance.populateAnts();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+       
+    }
+    
+    /**
+     * Test of getBrainScore method, of class AntBrain.
+     */
+    //@Test
+    public void testGetBrainScore() throws Exception {
+        
+        System.out.println("-------- getBrainScore() --------");
+        
+        File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample.ant");
+        AntBrain instance = new AntBrain(f);
+        
+        AntWorld w = new AntWorld(10,10);
+        
+        w.getPosition(2, 4).setAntHill("Red");
+        
+        instance.setAntWorld(w);
+        
+        instance.setColour("Red");
+        
+        w.getPosition(2,4).addFood(5);
+        
+        
+        instance.populateAnts();
+        
+        
+        
+        
+        int result = instance.getBrainScore();
+        int exp = 5;
+        
+        assertEquals(result, exp);
+        
+       
     }
 
     /**
      * Test of step method, of class AntBrain.
      */
-    //@Test
-    public void testStep() {
-        System.out.println("step");
-        AntBrain instance = null;
-        instance.step();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    @Test
+    public void testStep() throws Exception {
+        
+        System.out.println("-------- step() --------");
+        
+        File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample.ant");
+        AntBrain instance = new AntBrain(f);
+        
+        AntWorld w = new AntWorld(10,10);
+        
+        w.getPosition(2, 4).setAntHill("Red");
+        w.getPosition(3, 4).setAntHill("Red");
+        
+        w.getPosition(0, 0).addFood(5);
+        
+        w.getPosition(8,9).setRocky();
+        
+        instance.setColour("Red");
+        
+        
+        
+        instance.setAntWorld(w);
+        
+        int _i = 0;
+        
+        while (_i < 300000)
+        {
+            instance.step();
+            _i++;
+        }
+        
+        
+        System.out.println("------- Positions -------");
+        
+        for (int i = 0; i < 10; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+               System.out.println(w.getPosition(i, j).toString());
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
     }
-
+    
     
 }
