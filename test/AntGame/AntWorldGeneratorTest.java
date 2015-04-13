@@ -45,6 +45,7 @@ public class AntWorldGeneratorTest {
         File unknownChar = new File("C:\\Users\\Toby\\UnknownChar.world");
         File validWorld = new File("C:\\Users\\Toby\\ValidWorld.world");
         File noInitialDigits = new File("C:\\Users\\Toby\\noInitialDigits.world");
+        File missingCell = new File("C:\\Users\\Toby\\missingCell.world");
         AntWorldGenerator gen = new AntWorldGenerator();
         
         boolean thrown = false;
@@ -79,6 +80,18 @@ public class AntWorldGeneratorTest {
             thrown = true;
             System.out.println(e.getMessage());
         }
+        
+        assertTrue(thrown);
+        
+        try {
+            gen.antWorldGenerator(missingCell);
+        }
+        catch (AntWorldGeneratorException e) {
+            thrown = true;
+            System.out.println(e.getMessage());
+        }
+        
+        assertTrue(thrown);
     }
 
     /**

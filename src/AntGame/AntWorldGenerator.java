@@ -59,6 +59,7 @@ public class AntWorldGenerator {
             line = world.get(y);
             StringBuilder sb = new StringBuilder(line);
             int x = 0;
+            boolean prevWasSpace = false;
             char position;
             
             
@@ -74,6 +75,7 @@ public class AntWorldGenerator {
                     else {
                         sb.deleteCharAt(0);
                         line = sb.toString();
+                        prevWasSpace = false;
                         if (line.isEmpty()) {
                             continue;
                         }
@@ -88,6 +90,7 @@ public class AntWorldGenerator {
                             sb.deleteCharAt(0);
                             line = sb.toString();
                             x += 1;
+                            prevWasSpace = false;
                             continue;
                         } catch (PositionException ex) {
                             
@@ -102,6 +105,7 @@ public class AntWorldGenerator {
                     sb.deleteCharAt(0);
                     line = sb.toString();
                     x += 1;
+                    prevWasSpace = false;
                     continue;
                 }
                 
@@ -109,6 +113,7 @@ public class AntWorldGenerator {
                     sb.deleteCharAt(0);
                     line = sb.toString();
                     x += 1;
+                    prevWasSpace = false;
                     continue;
                 }
                 
@@ -117,6 +122,7 @@ public class AntWorldGenerator {
                     sb.deleteCharAt(0);
                     line = sb.toString();
                     x += 1;
+                    prevWasSpace = false;
                     continue;
                 }
                 
@@ -125,6 +131,7 @@ public class AntWorldGenerator {
                     sb.deleteCharAt(0);
                     line = sb.toString();
                     x += 1;
+                    prevWasSpace = false;
                     continue;                    
                 }
                 
@@ -133,12 +140,16 @@ public class AntWorldGenerator {
                     sb.deleteCharAt(0);
                     line = sb.toString();
                     x += 1;
+                    prevWasSpace = false;
                     continue;                    
                 }
                 
                 if (Character.isWhitespace(position)) {
+                    if (prevWasSpace)
+                        throw new AntWorldGeneratorException("Cells must be separated by only one whitespace");
                     sb.deleteCharAt(0);
                     line = sb.toString();
+                    prevWasSpace = true;
                     continue;
                 }
                 
