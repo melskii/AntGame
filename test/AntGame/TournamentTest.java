@@ -48,15 +48,20 @@ public class TournamentTest {
     public void testRunTournament() throws Exception {
         System.out.println("runTournament");
         ArrayList<AntBrain> players = new ArrayList<>();
+        AntWorld world = null;
         
         for (int i = 0; i < 3; i++) {
             File f = new File("C:\\Users\\Olivia\\Documents\\NetBeansProjects\\AntGame\\files\\sample2.ant");
+            File w = new File("C:\\Users\\Olivia\\Documents\\NetBeansProjects\\AntGame\\files\\sample0.world");
             AntBrain brain = new AntBrain(f);
+            AntWorldGenerator gen = new AntWorldGenerator();
+            
+            world = gen.antWorldGenerator(w);
             
             players.add(brain);
         }
                 
-        Tournament instance = new Tournament(players);
+        Tournament instance = new Tournament(players, world);
         System.out.println("Uploaded Brains: " + instance.brains);
         System.out.println("Player Number: " + instance.playerNo);
         System.out.println("Scores: " + instance.score);
