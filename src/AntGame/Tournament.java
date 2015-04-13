@@ -30,7 +30,7 @@ public class Tournament {
         }
     }
     
-    public AntBrain runTournament() throws PositionException, AntException{
+    public AntBrain runTournament() throws PositionException, AntException, AntBrainException{
         int playerX = 0;
         int playerY = playerX + 1;
 
