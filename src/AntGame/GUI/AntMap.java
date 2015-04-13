@@ -6,8 +6,10 @@ package AntGame.GUI;
 
 
 import AntGame.Ant;
+import AntGame.AntBrain;
 import AntGame.AntWorld;
 import AntGame.AntWorldGenerator;
+import AntGame.Game;
 import java.awt.BorderLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
@@ -31,11 +33,13 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
@@ -47,22 +51,31 @@ import javax.swing.JScrollPane;
  */
 public class AntMap extends JFrame {
 
-    private JMenuItem upload;
+    
     private AntWorld world;
     final JFileChooser fc = new JFileChooser();     
+    private int x;
+    private int y;
+    
+    private JMenu control;
+    private JMenuItem run;
+    
+    private LinkedHashMap game;
     
     private MapPanel mapPanel;
     
-    
+    /*
     public static void main(String[] args) {
         
         AntMap m = new AntMap();  
-    }
+    }*/
 
     
-    public AntMap()
+    public AntMap(LinkedHashMap<String, Object> game)
     {
         super("Ant Map");
+        
+        this.game = game;       
         
         createAndShowGUI();
     }
@@ -71,8 +84,14 @@ public class AntMap extends JFrame {
     private  void createAndShowGUI() {
  
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-      mapPanel = new MapPanel(new Point(150, 150), null);
+      
+      if (game.containsKey("World"))
+      {
+          System.out.println(game.get("World"));
+          world = (AntWorld)game.get("World");
+      }
+      
+      mapPanel = new MapPanel(world);
       
       add(mapPanel);
       
@@ -99,42 +118,26 @@ public class AntMap extends JFrame {
     public void createMenuBar()
     {
         JMenuBar mb = new JMenuBar();
-        JMenu control;
         
-        upload = new JMenuItem("Upload World");   
         control = new JMenu("File");
         
-        upload.addActionListener(new ActionListener() {
+        run = new JMenuItem("Run");
+        
+        
+        
+        run.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e)
             {
-                //Handle open button action.
-                if (e.getSource() == upload) 
-                {
-                    int returnVal = fc.showOpenDialog(AntMap.this);
-
-                    if (returnVal == JFileChooser.APPROVE_OPTION) {
-                        
-                        File _file = fc.getSelectedFile();
-                        
-                        generateAntWorld(_file); 
-                      
-                    }
-                    
-                    else {
-                        
-                        //lblPlayer1.setText("Error Uploading");
-                        
-                    }
-
-                 
-                }      
+                
+                runGame();
+                
             }
         });
 
 
         //Add in the shortest control.
 
-        control.add(upload);
+        control.add(run);
         
         mb.add(control);
         
@@ -142,6 +145,35 @@ public class AntMap extends JFrame {
 
 
     }
+    
+    public void runGame()
+    {
+        JOptionPane.showMessageDialog(mapPanel, "Running the Game");
+        control.remove(control);
+        
+        pack();
+        
+        RunnableGame run = new RunnableGame(game, mapPanel);
+        Thread runThread = new Thread(run);
+        runThread.start();
+        
+        for (int i = 0; i < 2000; i++)
+        {
+            remove(mapPanel);
+
+            mapPanel = new MapPanel(world);
+            add(mapPanel);
+
+            pack();
+        
+        }
+        
+        
+                
+        
+    }
+    
+    
     
     public void generateAntWorld(File f)
     {
@@ -153,7 +185,7 @@ public class AntMap extends JFrame {
             remove(mapPanel);
             
             
-            mapPanel = new MapPanel(new Point(gen.x, gen.y), world);
+            mapPanel = new MapPanel(world);
             add(mapPanel);
             
             pack();
@@ -198,14 +230,17 @@ class MapPanel extends JPanel  {
     HashMap<Point, Polygon> points;
     
     
-    public MapPanel(Point p, AntWorld world)  {
+    public MapPanel(AntWorld world)  {
         
         setBorder(BorderFactory.createLineBorder(Color.black));
         
+        
+        
         points = new HashMap<Point, Polygon>();
         
-        this.x = (int)p.getX();
-        this.y = (int)p.getY();
+        this.x = world.xlength;
+        this.y = world.ylength;
+                
         antWorld = world;
  
     }
@@ -255,8 +290,6 @@ class MapPanel extends JPanel  {
 
                 }
 
-                System.out.println("x: " + i +  "y: " + j);
-                
                 g.setColor(Color.BLACK);
                 g.drawPolygon(p);
                 
@@ -374,3 +407,36 @@ class MapPanel extends JPanel  {
 
 
 
+class RunnableGame implements Runnable {
+
+    private LinkedHashMap<String, Object> game;
+    private JPanel mapPanel;
+
+    public RunnableGame(LinkedHashMap<String, Object> game, JPanel mapPanel) {
+        this.game = game;
+        this.mapPanel = mapPanel;
+    }
+
+     public void run()
+    {
+        Game run  = new Game((AntBrain)game.get("Brain 1"), (AntBrain)game.get("Brain 2"), (AntWorld)game.get("World"));
+        
+          try {
+                AntBrain b = run.runGame();
+                
+                if (b == null)
+                {
+                    JOptionPane.showMessageDialog(mapPanel,  "It was a tie");
+                }
+                else {
+                    JOptionPane.showMessageDialog(mapPanel, "Winner: " + b.getColour());
+                }
+            }
+            catch (Exception ex)
+            {
+                JOptionPane.showMessageDialog(mapPanel, ex.getMessage());
+            }
+    }
+    
+    
+}
