@@ -49,8 +49,8 @@ public class TournamentTest {
         System.out.println("runTournament");
         ArrayList<AntBrain> players = new ArrayList<>();
         
-        for (int i = 0; i < 300; i++) {
-            File f = new File("C:\\Users\\Olivia\\Documents\\NetBeansProjects\\AntGame\\files\\sample.ant");
+        for (int i = 0; i < 3; i++) {
+            File f = new File("C:\\Users\\Olivia\\Documents\\NetBeansProjects\\AntGame\\files\\sample2.ant");
             AntBrain brain = new AntBrain(f);
             
             players.add(brain);
@@ -60,6 +60,8 @@ public class TournamentTest {
         System.out.println("Uploaded Brains: " + instance.brains);
         System.out.println("Player Number: " + instance.playerNo);
         System.out.println("Scores: " + instance.score);
+        
+        instance.runTournament();
     }
     
     
