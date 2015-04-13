@@ -51,7 +51,9 @@ public class MapPanel extends JPanel  {
     
     public void paintComponent(Graphics g) {
         
-        super.paintComponent(g);    
+        super.paintComponent(g);  
+        
+        
   
         int a = 1;
         
@@ -84,8 +86,6 @@ public class MapPanel extends JPanel  {
                 {
                     Point corner = hex_corner(x, y, 5, c);
 
-                    //System.out.println(c + " " + corner.x +", " + corner.y + " : " + corner.toString());
-                 
                     p.addPoint(corner.x, corner.y);
                     
                     
@@ -126,6 +126,8 @@ public class MapPanel extends JPanel  {
     
     public void setHexagonColours(Graphics g)
     {
+        repaint();
+        
         Iterator it = points.entrySet().iterator();
         
          
@@ -187,8 +189,8 @@ public class MapPanel extends JPanel  {
                     
                     else {
                         
-                        g.setColor(Color.white);
-                        g.fillPolygon(p);
+                       // g.setColor(Color.white);
+                        //g.fillPolygon(p);
                         
                         
                         
