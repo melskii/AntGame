@@ -17,11 +17,13 @@ public class Tournament {
     ArrayList<AntBrain> brains = new ArrayList<>();
     ArrayList<Integer> score = new ArrayList<>();
     HashMap played = new HashMap();
+    AntWorld world;
     
-    public Tournament(ArrayList<AntBrain> uploaded){
+    public Tournament(ArrayList<AntBrain> uploaded, AntWorld world){
         int i =0;
         
         for(AntBrain b : uploaded){
+            this.world = world;
             brains.add(b);
             playerNo.add(i);
             score.add(0);
@@ -33,13 +35,10 @@ public class Tournament {
     public AntBrain runTournament() throws PositionException, AntException, AntBrainException, IOException, AntWorldGeneratorException{
         int playerX = 0;
         int playerY = playerX + 1;
-        File validWorld = new File("C:\\Users\\Olivia\\Documents\\NetBeansProjects\\AntGame\\files\\tiny.world");
-        AntWorldGenerator world = new AntWorldGenerator();
-        AntWorld tournamentWorld = world.antWorldGenerator(validWorld);
         
         while (playerX < playerNo.size()){
             if(played.get(brains.get(playerX)) != brains.get(playerY)){
-                Game round = new Game(brains.get(playerX), brains.get(playerY), tournamentWorld);                
+                Game round = new Game(brains.get(playerX), brains.get(playerY), world);                
                 AntBrain winner = round.runGame(); // run the round and get a winner
                 if(winner != null){
                     System.out.println("Winner: " + brains.indexOf(winner));
