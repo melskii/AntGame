@@ -438,8 +438,8 @@ public class AntBrain {
 
             if (!ant.isAlive())
             {
-                System.out.println("Step");
-                System.out.println(": Ant Dead");
+                //System.out.println("Step");
+                //System.out.println(": Ant Dead");
                 
                 deadCount++;
                 step();
@@ -448,23 +448,23 @@ public class AntBrain {
             
             else {
                 
-                System.out.println("Step (Ant: " + currentAnt + " State: " + ants.get(currentAnt).getState() + " Direction: " + ants.get(currentAnt).getDirection() + ")" );
+                //System.out.println("Step (Ant: " + currentAnt + " State: " + ants.get(currentAnt).getState() + " Direction: " + ants.get(currentAnt).getDirection() + ")" );
                 
                 if (!ant.resting())
                 {
                     Instruction state = instructions.getState(ant.getState());
                     Position antPos = ant.getPosition();
                     
-                    System.out.println(antPos);
+                    //System.out.println(antPos);
                     
                     if (state instanceof ISense)
                     {
                         
                         ISense _sense = (ISense)state;
                         
-                        System.out.println(": State Sense " + _sense.sensedir.getClass());
+                        ///System.out.println(": State Sense " + _sense.sensedir.getClass());
                         
-                        System.out.println("pos: " + antPos);
+                        //System.out.println("pos: " + antPos);
                         
                         Position _sensed = null;
                         
@@ -476,7 +476,7 @@ public class AntBrain {
                         }
                         
                         if (_sensed != null) {
-                            System.out.println(_sensed.toString());
+                           // System.out.println(_sensed.toString());
                         }
                         
                         if (_sensed != null && _sensed.cellMatches(_sense.cond, colour))
@@ -492,7 +492,7 @@ public class AntBrain {
                     else if (state instanceof IMark)
                     {
                         
-                        System.out.println(": State Mark");
+                        //System.out.println(": State Mark");
                         
                         IMark _mark = (IMark)state;
                         
@@ -511,7 +511,7 @@ public class AntBrain {
                     
                     else if (state instanceof IUnmark)
                     {
-                        System.out.println(": State Unmark");
+                        //System.out.println(": State Unmark");
                         
                         IUnmark _unmark = (IUnmark) state;
                         
@@ -522,7 +522,7 @@ public class AntBrain {
                     
                     else if (state instanceof IPickup)
                     {
-                        System.out.println(": State Pickup");
+                        //System.out.println(": State Pickup");
                         
                         IPickup _pickup = (IPickup) state;
                         
@@ -547,7 +547,7 @@ public class AntBrain {
                     
                     else if (state instanceof IDrop)
                     {
-                        System.out.println(": State Drop");
+                        //System.out.println(": State Drop");
                         
                         IDrop _drop = (IDrop) state;
                         
@@ -567,7 +567,7 @@ public class AntBrain {
                     
                     else if (state instanceof ITurn)
                     {
-                        System.out.println(": State Turn");
+                        //System.out.println(": State Turn");
                         
                         ITurn _turn = (ITurn)state;
                         
@@ -582,17 +582,17 @@ public class AntBrain {
                     
                     else if (state instanceof IMove)
                     {
-                        System.out.println(": State Move");
+                        //System.out.println(": State Move");
                         
                         IMove _move = (IMove)state;
                         
-                        System.out.println(antPos);
-                        System.out.println(ant.getDirection());
+                        //System.out.println(antPos);
+                        //System.out.println(ant.getDirection());
                         
                         Position _newPos = antWorld.adjacentCell(antPos, ant.getDirection());
                         
                         
-                        System.out.println("new pos: " + _newPos);
+                        //System.out.println("new pos: " + _newPos);
                         
                         if (_newPos == null || (_newPos.getRocky() || _newPos.getAnt() != null))
                         {
@@ -632,7 +632,7 @@ public class AntBrain {
                     //come back to this. Look at number theory
                     else if (state instanceof IFlip)
                     {
-                        System.out.println(": State Flip");
+                        //System.out.println(": State Flip");
                         
                         IFlip _flip = (IFlip)state;
                         
@@ -658,7 +658,7 @@ public class AntBrain {
                 }
                 else {
                     
-                    System.out.println(": Ant Resting");
+                    //System.out.println(": Ant Resting");
                     
                     ant.updateResting();
                 }
@@ -687,6 +687,10 @@ public class AntBrain {
         }
     }
     
+    /**
+     * Get the ant dead count
+     * @return dead count
+     */
     public String getDeadCount()
     {
         return deadCount + " dead out of " + ants.size();

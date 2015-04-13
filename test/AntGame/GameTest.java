@@ -39,8 +39,8 @@ public class GameTest {
                
         System.out.println("runGame");
         
-        File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample.ant");
-        File w = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample0.world");
+        File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample2.ant");
+        File w = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\tiny.world");
         
         boolean thrown = false;
         
