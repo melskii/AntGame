@@ -235,13 +235,13 @@ public class AntWorld {
     {      
         ArrayList anthill = new ArrayList();
         
-        if (colour == "Red" || colour == "Black")
+        if (colour.equals("Red") || colour.equals("Black"))
         {
             for (int i = 0;  i < xlength; i++)
             {
                 for (int j = 0; j < ylength; j++)
                 {
-                    if (antworld[i][j].getAntHill() == colour)
+                    if ((antworld[i][j].getAntHill()).equals(colour))
                     {
                         anthill.add(antworld[i][j]);
 
