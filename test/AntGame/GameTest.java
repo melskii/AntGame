@@ -8,6 +8,10 @@ import java.io.File;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+
+import AntGame.exceptions.*;
 import static org.junit.Assert.*;
 
 /**
@@ -31,33 +35,46 @@ public class GameTest {
      * Test of runGame method, of class Game.
      */
     @Test
-    public void testRunGame() {
+    public void testRunGame() throws AntBrainException, AntException, AntWorldGeneratorException, PositionException, IOException {
                
         System.out.println("runGame");
         
         File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample.ant");
+        File w = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample0.world");
         
         boolean thrown = false;
         
         AntBrain player1;
         AntBrain player2;
-        
-        try {
-            player1 = new AntBrain(f);
-            player2 = new AntBrain(f);
-            
-            Game instance = new Game(player1, player2);
-            AntBrain expResult = null;
+        AntWorld world;
+          
+        player1 = new AntBrain(f);
+        player2 = new AntBrain(f);
+        AntWorldGenerator gen = new AntWorldGenerator();
 
-            AntBrain result = instance.runGame();
-            
-            assertEquals(expResult, result);
-            
-        } catch (Exception e)
+
+        world = gen.antWorldGenerator(w);
+
+        Game instance = new Game(player1, player2, world);
+        
+        AntBrain result = instance.runGame();
+
+        AntBrain exp = null;
+        
+        if (player1.getBrainScore() > player2.getBrainScore())
         {
-            String _msg = e.getMessage();
+            exp = player1;
+        }
+        else if (player1.getBrainScore() < player2.getBrainScore())
+        {
+            exp = player2;
         }
         
+        System.out.println("Player 1 : " + player1.getBrainScore() + " - " + player1.getDeadCount());
+        System.out.println("Player 2 : " + player2.getBrainScore() + " - " + player2.getDeadCount());
         
+
+        assertEquals(exp, result);
+               
     }
 }

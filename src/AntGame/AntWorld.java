@@ -6,6 +6,7 @@ package AntGame;
 
 import java.util.ArrayList;
 import AntGame.Tokens.*;
+import AntGame.exceptions.AntBrainException;
 import AntGame.exceptions.PositionException;
 
 public class AntWorld {
@@ -229,21 +230,28 @@ public class AntWorld {
      * @param colour team colour
      * @return ArrayList of Positions.
      */
-    public ArrayList<Position> getAntHill (String colour)
+    public ArrayList<Position> getAntHill (String colour) throws AntBrainException
     {      
         ArrayList anthill = new ArrayList();
         
-        System.out.println(antworld.length);
-        
-        for (int i = 0;  i < xlength; i++)
+        if (colour == "Red" || colour == "Black")
         {
-            for (int j = 0; j < ylength; j++)
+            for (int i = 0;  i < xlength; i++)
             {
-                if (antworld[i][j].getAntHill() == colour)
+                for (int j = 0; j < ylength; j++)
                 {
-                    anthill.add(antworld[i][j]);
-                }
-            }      
+                    if (antworld[i][j].getAntHill() == colour)
+                    {
+                        anthill.add(antworld[i][j]);
+
+                    }
+                }      
+            }
+        }
+            
+        else {
+            
+            throw new AntBrainException ("Anthill colour wasn't specified.");
         }
         
         return anthill;

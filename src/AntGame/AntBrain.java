@@ -330,7 +330,7 @@ public class AntBrain {
      * 
      * @param world AntWorld
      */
-    public void setAntWorld (AntWorld world)
+    public void setAntWorld (AntWorld world) throws AntBrainException
     {
         this.antWorld = world;
         populateAnts();
@@ -381,9 +381,11 @@ public class AntBrain {
     /**
      * Populate the Ant hill Positions for that team with new Ants
      */
-    public void populateAnts(){
+    public void populateAnts() throws AntBrainException {
         
         ArrayList<Position> anthill = antWorld.getAntHill(colour);
+        
+        System.out.println("AntHill size: " + anthill.size());
         
         for (int i = 0; i < anthill.size(); i++)
         {
@@ -407,9 +409,10 @@ public class AntBrain {
      * Calculates the amount of food in AntBrains anthill
      * @return food in the Anthill
      */
-    public int getBrainScore()
+    public int getBrainScore() throws AntBrainException
     {
         int score = 0;
+      
         ArrayList<Position> anthill = antWorld.getAntHill(colour);
         
         for (int i = 0; i < anthill.size(); i++)
@@ -683,5 +686,11 @@ public class AntBrain {
             return "Black";
         }
     }
+    
+    public String getDeadCount()
+    {
+        return deadCount + " dead out of " + ants.size();
+    }
+    
     
 }

@@ -59,12 +59,11 @@ public class Game {
      * 
      * @return winning AntBrain
      */
-    public AntBrain runGame() throws PositionException, AntException {
+    public AntBrain runGame() throws PositionException, AntException, AntBrainException {
         
         counter = 300000;
         
-        antbrain1.setAntWorld(world);
-        antbrain2.setAntWorld(world);
+        
         
         //Pick a team colour Randomly for ant brain 1 
         Random ran = new Random();
@@ -73,9 +72,16 @@ public class Game {
         {
             antbrain1.setColour("Black");
         }
+        else {
+            antbrain1.setColour("Red");
+        }
         
         //Set the other team as the opposite colour
-        antbrain2.setColour(antbrain2.getFoeColour());
+        antbrain2.setColour(antbrain1.getFoeColour());
+    
+        
+        antbrain1.setAntWorld(world);
+        antbrain2.setAntWorld(world);
         
         
         
