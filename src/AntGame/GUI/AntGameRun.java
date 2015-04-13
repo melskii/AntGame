@@ -36,7 +36,7 @@ public class AntGameRun extends JFrame {
     {
         super("Run Ant Game");
     }
-    
+        
     
     public void mainFrame()
     {
