@@ -84,10 +84,11 @@ public class Game {
         antbrain2.setAntWorld(world);
         
         
+         int play = 1;
         
         while (counter >= 0)
         {
-            int play = 1;
+           
             
             switch (play) {
                 case 1: antbrain1.step();

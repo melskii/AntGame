@@ -172,8 +172,7 @@ public class AntMap extends JFrame {
                 
         
     }
-    
-    
+   
     
     public void generateAntWorld(File f)
     {

@@ -12,8 +12,8 @@ import AntGame.exceptions.PositionException;
 public class AntWorld {
     
     Position[][] antworld;
-    int xlength;
-    int ylength;
+    public int xlength;
+    public int ylength;
     
     
     public AntWorld(int x, int y) {   //might be better to have a contructor with antworld[][] parameter to be passed from generator already made rocky etc 
