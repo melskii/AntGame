@@ -87,6 +87,7 @@ public class AntWorld {
         System.out.println("Given Postion: " + p);
         
         for(int j = 0; j < 6; j++){
+            System.out.println("Direction Given: " + j);
             while(i < 2){
                 Position search = adjacentCell(p, j);
                 
