@@ -5,6 +5,7 @@
 package AntGame;
 
 import AntGame.exceptions.*;
+import java.awt.List;
 import java.util.ArrayList;
 import java.io.*;
 import java.util.Collections;
@@ -17,7 +18,7 @@ public class Tournament {
     ArrayList<Integer> score = new ArrayList<>();
     HashMap played = new HashMap();
     
-    public Tournament(AntBrain[] uploaded){
+    public Tournament(ArrayList<AntBrain> uploaded){
         int i =0;
         
         for(AntBrain b : uploaded){
@@ -29,7 +30,7 @@ public class Tournament {
         }
     }
     
-    public AntBrain runTournament() throws PositionException, AntException{
+    public AntBrain runTournament() throws PositionException, AntException, AntBrainException{
         int playerX = 0;
         int playerY = playerX + 1;
 

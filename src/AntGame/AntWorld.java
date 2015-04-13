@@ -6,6 +6,7 @@ package AntGame;
 
 import java.util.ArrayList;
 import AntGame.Tokens.*;
+import AntGame.exceptions.AntBrainException;
 import AntGame.exceptions.PositionException;
 
 public class AntWorld {
@@ -88,6 +89,9 @@ public class AntWorld {
         for(int j = 0; j < 6; j++){
             while(i < 2){
                 Position search = adjacentCell(p, j);
+                
+                System.out.println("Search");
+                System.out.println(search);
                 System.out.println("Searching position: " + search.x + "," + search.y);
                 if(!hasAnt(search)){
                     System.out.println("Didn't have ant: " + i);
@@ -182,13 +186,19 @@ public class AntWorld {
                 
             case 4:
                 if (y % 2 == 0) {
+                    
+                    System.out.println("if");
                     newX = x - 1;
                     newY = y -1;
                     break;
                 }
                 else {
+                    
+                    System.out.println("else");
                     newX = x;
                     newY = y - 1;
+                    
+                    System.out.println(newX + ", " + newY);
                     break;
                 }
                 
@@ -205,7 +215,7 @@ public class AntWorld {
                 }
         }
         
-        if (newX < xlength && newY < ylength && newX > 0 && newY > 0)
+        if (newX < xlength && newY < ylength && newX >= 0 && newY >= 0)
         {
             return antworld[newX][newY];
         }
@@ -220,21 +230,28 @@ public class AntWorld {
      * @param colour team colour
      * @return ArrayList of Positions.
      */
-    public ArrayList<Position> getAntHill (String colour)
+    public ArrayList<Position> getAntHill (String colour) throws AntBrainException
     {      
         ArrayList anthill = new ArrayList();
         
-        System.out.println(antworld.length);
-        
-        for (int i = 0;  i < xlength; i++)
+        if (colour == "Red" || colour == "Black")
         {
-            for (int j = 0; j < ylength; j++)
+            for (int i = 0;  i < xlength; i++)
             {
-                if (antworld[i][j].getAntHill() == colour)
+                for (int j = 0; j < ylength; j++)
                 {
-                    anthill.add(antworld[i][j]);
-                }
-            }      
+                    if (antworld[i][j].getAntHill() == colour)
+                    {
+                        anthill.add(antworld[i][j]);
+
+                    }
+                }      
+            }
+        }
+            
+        else {
+            
+            throw new AntBrainException ("Anthill colour wasn't specified.");
         }
         
         return anthill;
