@@ -138,7 +138,7 @@ public class AntWorld {
         Ant killed = kill.getAnt();
         kill.clearAnt();
                 
-        killed.setPosition(null);
+        killed.killAnt();
         
         kill.addFood(3);
     }
