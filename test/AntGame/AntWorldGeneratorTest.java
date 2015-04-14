@@ -102,10 +102,12 @@ public class AntWorldGeneratorTest {
     @Test
     public void testAntWorldGenerator_boolean() throws PositionException, AntWorldGeneratorException, IOException {
         
-        AntWorldGenerator gen = new AntWorldGenerator();
-        for (int i = 0; i < 1; i++) {
-            System.out.println(i);
+        //AntWorldGenerator gen = new AntWorldGenerator();
+        for (int i = 0; i < 2500; i++) {
+            AntWorldGenerator gen = new AntWorldGenerator();
+            System.out.println("ran this many times: " + i);
             File world = gen.antWorldGenerator("world2.world");
+            gen.antWorldGenerator(world);
             
         }
         

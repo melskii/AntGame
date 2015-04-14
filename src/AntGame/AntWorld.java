@@ -262,7 +262,7 @@ public class AntWorld {
                 for (int j = 0; j < ylength; j++)
                 {
                     
-                    if ((antworld[i][j].getAntHill()) == colour)
+                    if (colour.equals(antworld[i][j].getAntHill()))
                     {       
                         anthill.add(antworld[i][j]);
 
