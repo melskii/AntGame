@@ -4,6 +4,7 @@ package AntGame;
 import AntGame.exceptions.AntWorldGeneratorException;
 import AntGame.exceptions.PositionException;
 import java.io.File;
+import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertFalse;
@@ -99,12 +100,12 @@ public class AntWorldGeneratorTest {
      * Test of antWorldGenerator method, of class AntWorldGenerator.
      */
     @Test
-    public void testAntWorldGenerator_boolean() throws PositionException, AntWorldGeneratorException {
+    public void testAntWorldGenerator_boolean() throws PositionException, AntWorldGeneratorException, IOException {
         
         AntWorldGenerator gen = new AntWorldGenerator();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 1; i++) {
             System.out.println(i);
-            AntWorld world = gen.antWorldGenerator();
+            File world = gen.antWorldGenerator("world2.world");
             
         }
         
