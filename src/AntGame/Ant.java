@@ -15,6 +15,7 @@ public class Ant {
     private int state;
     private boolean hasFood;
     private boolean alive;
+    private boolean countedDead;
     private Position position;
     
     /**
@@ -98,6 +99,22 @@ public class Ant {
     {
         alive = false;
     }
+    
+    /**
+     * Update to say Ant Brain has counted as dead
+     */
+    public boolean countAsDead()
+    {
+        return countedDead;
+    }
+    
+    /**
+    */
+    public void updateDeadForAntBrain()
+    {
+        countedDead = true;
+    }
+    
     
     /**
      * Sets the current state of the ant
@@ -226,5 +243,20 @@ public class Ant {
         return position;
     }
     
-    
+    @Override 
+    public String toString()
+    {
+        String a = "";
+        
+        a += "Direction: " + direction + ".";
+        a += "Resting: " + resting + ".";
+        a += "Team: " + team + ".";
+        a += "State: " + state + ".";
+        a += "Has Fod: " + hasFood + ".";
+        a += "Alive: " + alive + ".";
+        a += "Position: " + position + ".";
+        
+        return a;
+        
+    }
 }

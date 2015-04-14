@@ -22,7 +22,7 @@ public class AntWorld {
         
         xlength = x;
         ylength = y;
-        
+     
         for(int i = 0; i < x; i++){
             for(int j = 0; j < y; j++){
                 antworld[i][j] = new Position(i,j);
@@ -235,7 +235,7 @@ public class AntWorld {
      * @return ArrayList of Positions.
      */
     public ArrayList<Position> getAntHill (String colour) throws AntBrainException
-    {      
+    {    
         ArrayList anthill = new ArrayList();
         
         if (colour.equals("Red") || colour.equals("Black"))
@@ -244,8 +244,9 @@ public class AntWorld {
             {
                 for (int j = 0; j < ylength; j++)
                 {
-                    if ((antworld[i][j].getAntHill()).equals(colour))
-                    {
+                    
+                    if ((antworld[i][j].getAntHill()) == colour)
+                    {       
                         anthill.add(antworld[i][j]);
 
                     }

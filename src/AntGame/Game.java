@@ -21,10 +21,10 @@ public class Game {
      * @param b1 Ant Brain for player 1
      * @param b2 Ant Brain for player 2
      */
-    public Game(AntBrain b1, AntBrain b2) {
+    public Game(AntBrain b1, AntBrain b2) throws PositionException, AntWorldGeneratorException {
       
         AntWorldGenerator gen = new AntWorldGenerator();
-        world = gen.antWorldGenerator(false);
+        world = gen.antWorldGenerator();
         
         
         
@@ -43,14 +43,15 @@ public class Game {
      */
     public Game (AntBrain b1, AntBrain b2, AntWorld w)
     {
-        AntWorldGenerator gen = new AntWorldGenerator();
+       //AntWorldGenerator gen = new AntWorldGenerator();
+        this.world = w;
         
         antbrain1 = b1;
         antbrain2 = b2;
         
         System.out.println(world);
          
-        this.world = w;
+        
         
     }
     
@@ -63,6 +64,7 @@ public class Game {
         
         counter = 300000;
         
+        System.out.println("hit here");
         
         
         //Pick a team colour Randomly for ant brain 1 
@@ -82,6 +84,12 @@ public class Game {
         
         antbrain1.setAntWorld(world);
         antbrain2.setAntWorld(world);
+        
+        
+        System.out.println("hit here 2");
+        System.out.println(antbrain1.getBrainLabel());
+        System.out.println(antbrain2.getBrainLabel());
+        
         
         
          int play = 1;

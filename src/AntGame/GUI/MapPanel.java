@@ -149,6 +149,8 @@ public class MapPanel extends JPanel  {
                         g.fillPolygon(p);
                     }
                     
+                    
+                    
                     else if (antWorld.getPosition(i, j).getAnt() != null)
                     {
                         Ant ant = antWorld.getPosition(i, j).getAnt();
@@ -167,7 +169,13 @@ public class MapPanel extends JPanel  {
                         g.fillPolygon(p);
                     }
                     
-                    else if (antWorld.getPosition(i, j).getAntHill() =="Red")
+                    else if (antWorld.getPosition(i, j).hasFood())
+                    {
+                        g.setColor(Color.orange);
+                        g.fillPolygon(p);
+                    }
+                    
+                    else if (antWorld.getPosition(i, j).getAntHill() == "Red")
                     {
                         g.setColor(Color.pink);
                         g.fillPolygon(p);
@@ -181,11 +189,7 @@ public class MapPanel extends JPanel  {
                         g.setColor(Color.gray);
                     } 
                     
-                    else if (antWorld.getPosition(i, j).hasFood())
-                    {
-                        g.setColor(Color.orange);
-                        g.fillPolygon(p);
-                    }
+                    
                     
                     else {
                         

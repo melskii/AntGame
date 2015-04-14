@@ -7,12 +7,14 @@ package AntGame.GUI;
 import AntGame.AntBrain;
 import AntGame.AntWorld;
 import AntGame.AntWorldGenerator;
+import AntGame.exceptions.AntBrainException;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -74,6 +76,7 @@ public class AntGameUpload extends JFrame{
                  else if (key.startsWith("World"))
                  {
                       this.title = "Upload " + (String)pair.getKey();
+                    
                       setTitle(title);
                  }
                  
@@ -98,7 +101,14 @@ public class AntGameUpload extends JFrame{
         c.setLayout(layout);
 
         upload = new JButton("Upload");
-        next = new JButton("Next");
+        
+        if (brain)
+        {
+            next = new JButton("Next");
+        }
+        else {
+            next = new JButton("Start");
+        }
         textArea = new JTextField("Upload a file");
         textValid = new JTextField("");
         valid = false;
@@ -177,6 +187,8 @@ public class AntGameUpload extends JFrame{
     {
        
         int val = fc.showOpenDialog(AntGameUpload.this);
+        
+        valid = false;
 
         if (val == JFileChooser.APPROVE_OPTION) {
 
@@ -242,6 +254,7 @@ public class AntGameUpload extends JFrame{
                         AntWorldGenerator gen = new AntWorldGenerator();
                         AntWorld world = gen.antWorldGenerator(_file);
                         valid = true;
+                        textValid.setText(world.xlength + " x " + world.ylength + " World loaded");
                         game.put(key, world);
                         
                         
@@ -267,6 +280,7 @@ public class AntGameUpload extends JFrame{
                     
                         AntBrain brain = new AntBrain(_file);
                         valid = true;
+                        textValid.setText(brain.getBrainLabel());
                         game.put(key, brain);
                         
                     }
@@ -287,7 +301,7 @@ public class AntGameUpload extends JFrame{
             
             if (valid)
             {
-                 textValid.setText("Valid");
+                 textValid.setText(textValid.getText() + " - Valid");
             }
 
                 

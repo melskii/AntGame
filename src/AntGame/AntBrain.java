@@ -45,21 +45,11 @@ public class AntBrain {
             
         }
         
-        try {
-        
-            instructions = new Graph();
-            validAntBrain(brain);
-                    
-         } catch (AntBrainException e) 
-         {
-             throw new AntBrainException("Ant Brain not valid: " + e.getMessage());
-         }
-    
-        ants = new LinkedList<Ant>();
-        
-        
-         System.out.println(brain.size() + " instructions loaded");
-        
+       
+        instructions = new Graph();
+        validAntBrain(brain);
+
+        ants = new LinkedList<Ant>();       
 
     }
 
@@ -440,9 +430,16 @@ public class AntBrain {
             {
                 //System.out.println("Step");
                 //System.out.println(": Ant Dead");
+                if (!ant.countAsDead())
+                {
+                    deadCount++;
+                    ant.updateDeadForAntBrain();
+                }
                 
-                deadCount++;
+                currentAnt = ((currentAnt+1) % ants.size());   
+                System.out.println("Dead hit here");
                 step();
+                
                 
             }
             
@@ -622,6 +619,7 @@ public class AntBrain {
                             if (antWorld.isSurrounding(antPos, ant.getColour()))
                             {
                                 System.out.println(": Killed an ant");
+                                
                             }
                             
                             
@@ -695,6 +693,8 @@ public class AntBrain {
     {
         return deadCount + " dead out of " + ants.size();
     }
+    
+   
     
     
     

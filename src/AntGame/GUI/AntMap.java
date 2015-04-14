@@ -36,14 +36,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 
 
 
@@ -61,6 +65,11 @@ public class AntMap extends JFrame {
     
     private JMenu control;
     private JMenuItem run;
+    
+    private boolean ran;
+    
+    
+    JLabel statusLabel;
     
     private LinkedHashMap game;
     
@@ -85,29 +94,40 @@ public class AntMap extends JFrame {
 
     private  void createAndShowGUI() {
  
-      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      
-      if (game.containsKey("World"))
-      {
-          System.out.println(game.get("World"));
-          world = (AntWorld)game.get("World");
-      }
-      
-      mapPanel = new MapPanel(world);
-      
-      add(mapPanel);
-      
-      createMenuBar();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-      //f.setContentPane(contentPane);
-      //f.add(new MapPanel());
+        if (game.containsKey("World"))
+        {
+            System.out.println(game.get("World"));
+            world = (AntWorld)game.get("World");
+            
+        }
 
-      pack();
+        mapPanel = new MapPanel(world);
 
-      setVisible(true);
+        add(mapPanel);
 
-      setResizable(false);
-      setLocationRelativeTo(null);  
+        createMenuBar();
+
+        JPanel statusPanel = new JPanel();
+        statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        add(statusPanel, BorderLayout.SOUTH);
+        statusPanel.setPreferredSize(new Dimension(getWidth(), 16));
+        statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+        statusLabel = new JLabel("Run Game to begin");
+        statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        statusPanel.add(statusLabel);
+
+
+        //f.setContentPane(contentPane);
+        //f.add(new MapPanel());
+
+        pack();
+
+        setVisible(true);
+
+        //setResizable(false);
+        setLocationRelativeTo(null);  
 
       //f.setExtendedState(f.getExtendedState() | JFrame.MAXIMIZED_BOTH);
     }
@@ -150,16 +170,32 @@ public class AntMap extends JFrame {
     
     public void runGame()
     {
+      
+          
+        ran = true;
+
         JOptionPane.showMessageDialog(mapPanel, "Running the Game");
         control.remove(control);
+
+        //remove(mapPanel);
+
+        AntBrain b1 = (AntBrain)game.get("Brain 1");
+        AntBrain b2 = (AntBrain)game.get("Brain 2");
+        AntWorld w = (AntWorld)game.get("World");
         
-        pack();
+        System.out.println("Run Game");
+        System.out.println(b1);
+        System.out.println(b2);
+        System.out.println(w);
         
-        RunnableGame run = new RunnableGame(game, mapPanel);
+        
+        RunnableGame run = new RunnableGame(game, mapPanel, statusLabel);
         Thread runThread = new Thread(run);
         runThread.start();
-        
-        for (int i = 0; i < 2000; i++)
+
+
+
+        for (int i = 0; i < 20000; i++)
         {
             remove(mapPanel);
 
@@ -167,8 +203,11 @@ public class AntMap extends JFrame {
             add(mapPanel);
 
             pack();
-        
+
         }
+
+
+        pack();
         
         
                 

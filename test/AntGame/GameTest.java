@@ -39,7 +39,7 @@ public class GameTest {
                
         System.out.println("runGame");
         
-        File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample2.ant");
+        File f = new File("N:\\Documents\\sample2.ant");
         File w = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\tiny.world");
         
         boolean thrown = false;
@@ -54,6 +54,8 @@ public class GameTest {
 
 
         world = gen.antWorldGenerator(w);
+        
+        System.out.println(world.xlength + " x " + world.ylength);
 
         Game instance = new Game(player1, player2, world);
         
