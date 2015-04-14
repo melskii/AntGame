@@ -70,7 +70,7 @@ public class AntWorldGenerator {
                 position = line.charAt(0);
                 
                 if (!even) {
-                    if(!Character.isWhitespace(position)) {
+                    if(position != ' ' && x == 0) {
                         throw new AntWorldGeneratorException("Every other line must start with a space");
                     }
                     else {
@@ -268,12 +268,12 @@ public class AntWorldGenerator {
                 current = coordList.get(i);
                 
                 if (i == 0 || i == 1) {
-                    found = abs(potentialX - current.getX()) > 20 || abs(potentialY - current.getY()) > 20;
+                    found = abs(potentialX - current.getX()) > 23 || abs(potentialY - current.getY()) > 23;
                     if (!found)
                         break;
                 }
                 
-                found = abs(potentialX - current.getX()) > 10 || abs(potentialY - current.getY()) > 10;
+                found = abs(potentialX - current.getX()) > 18 || abs(potentialY - current.getY()) > 18;
                 if (!found)
                     break;
             }
@@ -433,19 +433,17 @@ public class AntWorldGenerator {
                 }
                 
             }
-            //System.out.println(sb.toString());
             lines.add(sb.toString());
         }
         
         File file = new File(fileName);
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write("150\n");
-        writer.write("150\n");
-        System.out.println("size: " + lines.size());
-        for (int i = 0; i < lines.size(); i++) {
-            writer.write(lines.get(i) + '\n');
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write("150\n");
+            writer.write("150\n");
+            for (int i = 0; i < lines.size(); i++) {
+                writer.write(lines.get(i) + '\n');
+            }
         }
-        writer.close();
         
         return file;
     }
