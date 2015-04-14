@@ -14,22 +14,24 @@ public class Game {
     AntWorld world;
     
     int counter = 300000;
-    
+   
     
     /**
      * Class Constructor for Game. 
      * @param b1 Ant Brain for player 1
      * @param b2 Ant Brain for player 2
      */
-    public Game(AntBrain b1, AntBrain b2) throws PositionException, AntWorldGeneratorException {
+    public Game(AntBrain b1, AntBrain b2) throws PositionException, AntWorldGeneratorException, IOException , AntBrainException{
       
         AntWorldGenerator gen = new AntWorldGenerator();
-        world = gen.antWorldGenerator();
+        File f = gen.antWorldGenerator("new_world");
         
-        
-        
+        world = gen.antWorldGenerator(f);
+      
         antbrain1 = b1;
         antbrain2 = b2;
+        
+        setupGame();
             
        
         
@@ -41,7 +43,7 @@ public class Game {
      * @param b2 Ant Brain for player 2
      * @param w Ant World
      */
-    public Game (AntBrain b1, AntBrain b2, AntWorld w)
+    public Game (AntBrain b1, AntBrain b2, AntWorld w) throws AntBrainException
     {
        //AntWorldGenerator gen = new AntWorldGenerator();
         this.world = w;
@@ -49,25 +51,13 @@ public class Game {
         antbrain1 = b1;
         antbrain2 = b2;
         
-        System.out.println(world);
-         
-        
-        
+        setupGame();
+           
     }
     
-    /**
-     * Assigns each ant brain a colour and runs each game 300,000 turns.
-     * 
-     * @return winning AntBrain
-     */
-    public AntBrain runGame() throws PositionException, AntException, AntBrainException {
-        
-        counter = 300000;
-        
-        System.out.println("hit here");
-        
-        
-        //Pick a team colour Randomly for ant brain 1 
+    public void setupGame() throws AntBrainException
+    {
+         //Pick a team colour Randomly for ant brain 1 
         Random ran = new Random();
         
         if (ran.nextInt(2) == 0)
@@ -85,30 +75,49 @@ public class Game {
         antbrain1.setAntWorld(world);
         antbrain2.setAntWorld(world);
         
+    }
+    
+    /**
+     * Assigns each ant brain a colour and runs each game 300,000 turns.
+     * 
+     * @return winning AntBrain
+     */
+    public AntBrain runGame() throws PositionException, AntException, AntBrainException {
         
-        System.out.println("hit here 2");
-        System.out.println(antbrain1.getBrainLabel());
-        System.out.println(antbrain2.getBrainLabel());
+        counter = 300000;
         
-        
-        
-         int play = 1;
+        long timer = 0;
+        long step = 4000;
+  
+        int play = 1;
         
         while (counter >= 0)
         {
+             
            
+            if (timer == 0) {
+                
+                
+
             
-            switch (play) {
-                case 1: antbrain1.step();
-                        play = 2;
-                        break; 
-                case 2: antbrain2.step();
-                        play = 1;
-                        break;
+                switch (play) {
+                    case 1: antbrain1.step();
+                            play = 2;
+                            break; 
+                    case 2: antbrain2.step();
+                            play = 1;
+                            break;
+                }
+
+
+                counter--;
             }
             
+            timer = (timer+1) % step;
+          
+            timer = (timer+1) % step;
+            //System.out.println("timer = " + timer);
             
-            counter--;
             
         }
         

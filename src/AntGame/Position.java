@@ -275,9 +275,7 @@ public class Position {
     
      public boolean cellMatches (Condition c, String colour)
      {
-         System.out.println(c);
-         System.out.println(colour);
-         
+                  
          String team = colour;
          String foe = getFoeColour(colour);
          
@@ -325,10 +323,6 @@ public class Position {
          
          else if (c instanceof Marker)
          {
-             System.out.println("hit here: friend");
-             System.out.println(marker);
-             
-             System.out.println(marker.isEmpty());
              
              if (!marker.isEmpty() && marker.containsKey(team))
              {
@@ -343,9 +337,7 @@ public class Position {
          
          else if (c instanceof FoeMarker)
          {
-             System.out.println("hit here: foe");
-             
-             System.out.println(marker.isEmpty());
+            
              if (!marker.isEmpty() && marker.containsKey(foe))
              {
                  return true;

@@ -65,7 +65,7 @@ public class AntBrain {
      */
     public AntBrain getCopyAntBrain ()  throws IOException, AntBrainException
     {
-        System.out.println("generated new brain");
+        //System.out.println("generated new brain");
         AntBrain _new =  new AntBrain (file);
         
         return _new;
@@ -394,7 +394,7 @@ public class AntBrain {
         
         ArrayList<Position> anthill = antWorld.getAntHill(colour);
         
-        System.out.println("AntHill size: " + anthill.size());
+        //System.out.println("AntHill size: " + anthill.size());
         
         for (int i = 0; i < anthill.size(); i++)
         {
@@ -456,7 +456,7 @@ public class AntBrain {
                 }
                 
                 currentAnt = ((currentAnt+1) % ants.size());   
-                System.out.println("Dead hit here");
+                //System.out.println("Dead hit here");
                 step();
                 
                 
@@ -637,7 +637,7 @@ public class AntBrain {
                             
                             if (antWorld.isSurrounding(antPos, ant.getColour()))
                             {
-                                System.out.println(": Killed an ant");
+                               // System.out.println(": Killed an ant");
                                 
                             }
                             
@@ -710,7 +710,7 @@ public class AntBrain {
      */
     public String getDeadCount()
     {
-        return deadCount + " dead out of " + ants.size();
+        return deadCount + "/" + ants.size();
     }
     
    

@@ -40,7 +40,7 @@ public class AntWorld {
      */
     public AntWorld getCopyAntWorld () throws IOException, AntWorldGeneratorException, PositionException 
     {
-        System.out.println("generated new world");
+        //System.out.println("generated new world");
         AntWorldGenerator gen = new AntWorldGenerator();
         AntWorld _new =  gen.antWorldGenerator(file);
         
@@ -73,9 +73,9 @@ public class AntWorld {
     public boolean isSurrounding(Position p, String colour) throws PositionException{
         boolean surrounding = false;
         
-        System.out.println("Dead Surrounding here");
+        //System.out.println("Dead Surrounding here");
         
-        System.out.println("Postion Given: " + p);
+        //System.out.println("Postion Given: " + p);
         for(int j = 0; j < 6; j++){
             Position search = adjacentCell(p, j);
             
@@ -85,9 +85,9 @@ public class AntWorld {
                 String col = potentialKill.getColour();
                 
                 if(!col.equals(colour)){
-                    System.out.println("Potential Kill Colour: " + col);
+                    //System.out.println("Potential Kill Colour: " + col);
                     Position enemy = search;
-                    System.out.println("Potential Kill At: " + enemy.x + ", " + enemy.y);
+                    //System.out.println("Potential Kill At: " + enemy.x + ", " + enemy.y);
                     if(isSurrounded(enemy, col)){
                         return true;   
                     }
@@ -104,18 +104,18 @@ public class AntWorld {
         int i = 0;
         int surrBy = 0;
         
-        System.out.println("Given Postion: " + p);
+        //System.out.println("Given Postion: " + p);
         
         for(int j = 0; j < 6; j++){
-            System.out.println("Direction Given: " + j);
+            //System.out.println("Direction Given: " + j);
             while(i < 2){
                 Position search = adjacentCell(p, j);
                 
-                System.out.println("Search");
-                System.out.println(search);
-                System.out.println("Searching position: " + search.x + "," + search.y);
+                //System.out.println("Search");
+               // System.out.println(search);
+               // System.out.println("Searching position: " + search.x + "," + search.y);
                 if(!hasAnt(search)){
-                    System.out.println("Didn't have ant: " + i);
+                    //System.out.println("Didn't have ant: " + i);
                     i++;
                     j++;
                 }
@@ -127,7 +127,7 @@ public class AntWorld {
                 
                 else if(hasAnt(search)){
                     Ant surrounding = search.getAnt();
-                    System.out.println("Position has ant: " + surrounding.getColour());
+                    //System.out.println("Position has ant: " + surrounding.getColour());
                     
                     String surColour = surrounding.getColour();
                     
@@ -139,7 +139,7 @@ public class AntWorld {
                     else{
                         surrBy++;
                         if(surrBy == 5){
-                            System.out.println("ant surrounded");
+                            //System.out.println("ant surrounded");
                             kill_ant(p);
                             return true;                            
                         }
@@ -208,18 +208,18 @@ public class AntWorld {
             case 4:
                 if (y % 2 == 0) {
                     
-                    System.out.println("if");
+                    //System.out.println("if");
                     newX = x - 1;
                     newY = y -1;
                     break;
                 }
                 else {
                     
-                    System.out.println("else");
+                    //System.out.println("else");
                     newX = x;
                     newY = y - 1;
                     
-                    System.out.println(newX + ", " + newY);
+                    //System.out.println(newX + ", " + newY);
                     break;
                 }
                 
@@ -282,7 +282,7 @@ public class AntWorld {
     
     public Position sensed_cell(Position antPos, int direction, SenseDirection sensedir) throws PositionException{
         if(sensedir instanceof Here){
-            System.out.println("sense was here");
+            //System.out.println("sense was here");
             return antPos;
         }
         

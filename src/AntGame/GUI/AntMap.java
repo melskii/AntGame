@@ -1,4 +1,4 @@
-    /*
+ /**
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -50,6 +50,7 @@ public class AntMap extends JFrame {
     private String currentPlayers[];
     private String playerStats[][];
     private HashMap<Integer, AntBrain> tournamentScores;
+    private JScrollPane scrollTable;
     
     private JTable tournamentTable;
     
@@ -81,7 +82,7 @@ public class AntMap extends JFrame {
 
         if (game.containsKey("World"))
         {
-            System.out.println(game.get("World"));
+            
             world = (AntWorld)game.get("World");
             
         }
@@ -102,14 +103,20 @@ public class AntMap extends JFrame {
         statusPanel.add(statusLabel);
         
         currentPlayers = new String[2];
-        currentPlayers[0] = "Player 1";
-        currentPlayers[1] = "Player 2";        
-        playerStats = new String[2][2];
+        currentPlayers[0] = "Player";
+        currentPlayers[1] = "Player";        
         
-        playerStats[0][0] = "Kills";
-        playerStats[0][1] = "Kills";
-        playerStats[1][0] = "Food";
-        playerStats[1][1] = "Food";
+        playerStats = new String[4][2];
+        
+        playerStats[0][0] = "Player:";
+        playerStats[0][1] = "Player:";
+        playerStats[1][0] = "Colour:";
+        playerStats[1][1] = "Colour:";
+        playerStats[2][0] = "Score:";
+        playerStats[2][1] = "Score:";
+        playerStats[3][0] = "Dead:";
+        playerStats[3][1] = "Dead:";
+        
         
         scoreboardTable = new JTable (playerStats, currentPlayers);
         
@@ -121,7 +128,7 @@ public class AntMap extends JFrame {
         GroupLayout layout = new GroupLayout(scorePanel);
         scorePanel.setLayout(layout);
         
-        JScrollPane scrollTable = new JScrollPane(scoreboardTable);
+        scrollTable = new JScrollPane(scoreboardTable);
         
         scrollTable.setPreferredSize(new Dimension(25, 25));
         
@@ -227,13 +234,13 @@ public class AntMap extends JFrame {
         run.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e)
             {
-                if (reRun.rerun())
-                {
+                //if (reRun.rerun())
+                //{
                     runGame();
-                }
-                else {
-                    JOptionPane.showMessageDialog(mapPanel, "A game is already currently running");
-                }
+                //}
+               // else {
+                    
+               // }
                 
             }
         });
@@ -306,87 +313,214 @@ public class AntMap extends JFrame {
     
     public void runGame()
     {
+        if (!reRun.rerun())
+        {
+            JOptionPane.showMessageDialog(mapPanel, "A game is already currently running");
+        }
+        
+        else {
+        
+            boolean start = true;
 
-        boolean start = false;
+            statusLabel.setText("Setting up the Game...");
+            //control.remove(run);
 
-        JOptionPane.showMessageDialog(mapPanel, "Running the Game");
-        control.remove(control);
+            //remove(mapPanel);
 
-        //remove(mapPanel);
+            try {
+                //As the world will always be the end file.
+                for (int i = 1; i < (game.size()); i ++)
+                {
 
-        try {
-            //As the world will always be the end file.
-            for (int i = 1; i < (game.size()); i ++)
-            {
+                    String _key = "Brain " + i;
+                    //System.out.println("_key = " + _key);
 
-                String _key = "Brain " + i;
-
-                System.out.println("_key = " + _key);
+                    AntBrain _brain = (AntBrain)game.get(_key);
+                    _brain = _brain.getCopyAntBrain();
+                    game.put(_key, _brain);
+                    
+                    //System.out.println("Copy: " + "_brain = " + _brain);
+                    
+                }
                 
-                AntBrain _brain = (AntBrain)game.get(_key);
-                _brain = _brain.getCopyAntBrain();
-                game.put(_key, _brain);
+                
+
+                AntWorld _world = (AntWorld)game.get("World");
+                _world = _world.getCopyAntWorld();
+                world = _world;
+
+                game.put("World", _world);
+
+                start = true;
+
 
             }
 
-            AntWorld _world = (AntWorld)game.get("World");
-            _world = _world.getCopyAntWorld();
-            world = _world;
-
-            game.put("World", _world);
-
-            start = true;
-            
-            
-        }
-       
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-            
-            JOptionPane.showMessageDialog(mapPanel, "Error");
-        }
-
-        
-        System.out.println("Run Game");
-        
-        if (start)
-        {
-            
-            run.setText("Re-run");
-            reRun.setReRun(false);
-            
-            
-        
-            RunnableGame run = new RunnableGame(game, mapPanel, statusLabel, reRun);
-            Thread runThread = new Thread(run);
-            runThread.start();
-
-            
-            paintloop:
-            for (int i = 0; i < 20000; i++)
+            catch (Exception e)
             {
-                remove(mapPanel);
+                System.out.println(e.getMessage());
 
-                mapPanel = new MapPanel(world);
-                add(mapPanel);
-              
-                if (reRun.rerun())
+                JOptionPane.showMessageDialog(mapPanel, "Error");
+            }
+
+
+            //System.out.println("Run Game");
+
+            if (start)
+            {
+
+                statusLabel.setText("Running the game...");
+
+                run.setText("Re-run");
+                reRun.setReRun(false);
+
+                AntBrain b1 = (AntBrain)game.get("Brain 1");
+                AntBrain b2 = (AntBrain)game.get("Brain 2");
+                AntWorld w = (AntWorld)game.get("World");
+                
+                
+                
+                Game gamerun = null;
+                
+                try {
+                    
+                    gamerun  = new Game(b1, b2 , w);
+                    
+                
+                    
+                } catch (Exception e)
                 {
-                    runThread.interrupt();
-                    break paintloop;
+                    JOptionPane.showMessageDialog(mapPanel, "Unable to run the game");
+                }
+                
+                Thread runThread = null;
+                boolean startThread = false;
+                
+                
+                if (gamerun != null)
+                {
+                    RunnableGame run = new RunnableGame(gamerun, mapPanel, statusLabel, reRun, lblWinner);
+                    runThread = new Thread(run);
+                    
+                }
+                
+     
+                if (world.xlength > 0 && gamerun != null)
+                {
+                    
+                    
+
+                    paintloop:
+                    for (int i = 0; i < 20000; i++)
+                    {
+
+
+                        
+                        
+                        remove(mapPanel);
+
+                        mapPanel = new MapPanel(world);
+                        add(mapPanel);
+                                              
+                        updateScoreboard();
+
+                       // int s = 0;
+
+                       // while (i < 20000 && (s % 2) == 0)
+                       // {
+                         //   updateScoreboard();
+                          //  s++;
+                        //}
+
+                        //updateScoreboard();
+
+                        if (reRun.rerun())
+                        {                            
+                            runThread.interrupt();
+                            break paintloop;
+                        }
+
+
+                    }
+                    
+                    if (!startThread)
+                    {
+                        startThread = true;
+                        runThread.start();
+                        
+                    }
+                    
+                    
+                    
+                    //AntBrain b1 = (AntBrain)game.get("Brain 1");
+                    //AntBrain b2 = (AntBrain)game.get("Brain 2");
+                  
+                    //statusLabel.setText("Player 1 (Team: " + b1.getColour() + ", Dead: " + b1.getDeadCount() + " , Score: " + b1.getBrainScore() + ") Player 2 (Team: " + b2.getColour() + ", Dead: " + b2.getDeadCount() + " , Score: " + b2.getBrainScore() + ")");          
+
+                    pack();
                 }
 
-                pack();
             }
-            
-            System.out.println("Final Re_run " + reRun.rerun());
-            //pack();
-            
         }
         
-        
                 
+        
+    }
+    
+    
+    public void updateScoreboard()
+    {
+        
+        ///System.out.println("updating scoreboard");
+        
+        
+        if (world.xlength > 0)
+        {
+            scrollTable.remove(scoreboardTable);
+
+            for (int j = 1; j < (game.size()); j++)
+            {
+
+                String _key = "Brain " + j;
+                //System.out.println("_key = " + _key);
+
+                AntBrain _brain = (AntBrain)game.get(_key);
+                
+                //System.out.println(_brain);
+
+                //try {
+
+                    playerStats[0][j-1] = "Player: " + j;
+                    playerStats[1][j-1] = "Colour: " + _brain.getColour();
+                    
+                    playerStats[3][j-1] = "Dead: " + _brain.getDeadCount();
+
+                    //System.out.println("_brain.getBrainScore() = " + _brain.getBrainScore());
+
+                try {
+                    playerStats[2][j-1] = "Score: " + _brain.getBrainScore();
+                } catch (Exception ex)
+                {
+                   System.out.println("Error: " + ex.getMessage());
+                }
+
+
+            }
+
+
+
+            scoreboardTable = new JTable (playerStats, currentPlayers);
+
+            scoreboardTable.enable(false);
+
+            scrollTable.add(scoreboardTable);
+
+            scoreboardTable.repaint();
+            scrollTable.repaint();
+
+            pack();    
+            
+        }
         
     }
   
@@ -405,9 +539,9 @@ public class AntMap extends JFrame {
             
             pack();
             
-            System.out.println(gen.x + " , " + gen.y);
+            //System.out.println(gen.x + " , " + gen.y);
             
-            System.out.println("hit here");
+            //System.out.println("hit here");
         }
         catch (Exception e)
         {
