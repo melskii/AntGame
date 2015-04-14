@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.io.*;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 
 public class Tournament {
@@ -20,16 +19,8 @@ public class Tournament {
     HashMap played = new HashMap();
     AntWorld world;
     
-    int playerX = 0;
-    int playerY = 0;
-    
-    LinkedList<Game> rounds;
-    
-    
     public Tournament(ArrayList<AntBrain> uploaded, AntWorld world){
         int i =0;
-        
-        rounds = new LinkedList<Game>();
         
         for(AntBrain b : uploaded){
             this.world = world;
@@ -41,149 +32,39 @@ public class Tournament {
         }
     }
     
-    
-    public LinkedList<Game> getRounds() throws PositionException, AntException, AntBrainException, IOException, AntWorldGeneratorException 
-    {
-   
-        if(played.get(brains.get(playerX)) != brains.get(playerY)){
-            //System.out.println("Player No Size: " + playerNo.size());
-
-
-            if(playerY < playerNo.size()-1)
-            {
-
-                AntBrain b1 = brains.get(playerX).getCopyAntBrain();
-                AntBrain b2 = brains.get(playerX).getCopyAntBrain();
-                AntWorld w  = world.getCopyAntWorld();
-
-
-                rounds.add(new Game(b1, b2, w));       
-            }
-        }
-            
-        return rounds;
-        
-        
-    }
-    
-    public AntBrain runTournamentRound(Game round) throws PositionException, AntException, AntBrainException, IOException, AntWorldGeneratorException 
-    {
-        
-        AntBrain winner = null;
-    
-        
-        
-        if (!rounds.isEmpty())
-        {
-            if(played.get(brains.get(playerX)) != brains.get(playerY)){    
-                
-            
-                Game game = rounds.pop();
-                winner = game.runGame(); // run the round and get a winner
-
-               if(winner != null){
-                   //System.out.println("Winner: " + brains.indexOf(winner));
-                   int addTo = brains.indexOf(winner); // get index of winner
-                   int currentScore = score.get(addTo);
-                   score.set(addTo, currentScore+2);
-               }
-               else{
-                   //System.out.println("Draw");
-                   int currentScoreOne = score.get(playerX);
-                   score.set(playerX, currentScoreOne+1);
-                   int currentScoreTwo = score.get(playerY);
-                   score.set(playerY, currentScoreTwo+1);
-               }
-
-               played.put(brains.get(playerX), brains.get(playerY)); // mark both brains as played
-
-               playerY++;    
-            }
-
-            else if(playerX+2 < playerNo.size()){
-
-                playerX++;
-                playerY = playerX+1;
-                
-            
-            }
-            
-            getRounds();
-
-        
-         }
-        
-        return winner;
-    }
-        
-        
-    
-    
-    public AntBrain returnWinner()
-    {
-        int highestScore = Collections.max(score);
-        //System.out.println("High Score: " + highestScore);
-        
-        int j = 0;
-        for (int i = 0; i < score.size(); i++) {
-            if(score.get(i) == highestScore){
-                j++;
-                if(j > 2){
-                    System.out.println("It was a draw");
-                    return null;
-                }
-            }         
-        }
-        
-        int owner = score.indexOf(highestScore);
-        //System.out.println("Owner: " + score.indexOf(highestScore));
-        AntBrain finalWinner = brains.get(owner);
-
-        return finalWinner;
-     
-    }
-    
     public AntBrain runTournament() throws PositionException, AntException, AntBrainException, IOException, AntWorldGeneratorException{
         int playerX = 0;
         int playerY = 0;
         
         while (playerX < playerNo.size()){
-            //System.out.println("Player X :" + playerX);
-            //System.out.println("Player Y :" + playerY);
-            //System.out.println("Brains size: " + brains.size());
-            
+            System.out.println("Player X :" + playerX);
+            System.out.println("Player Y :" + playerY);
+            System.out.println("Brains size: " + brains.size());
             if(played.get(brains.get(playerX)) != brains.get(playerY)){
-                //System.out.println("Player No Size: " + playerNo.size());
-                
-                
-                if(playerY < playerNo.size()-1)
-                {
-                    
-                //System.out.println("Jumped here");
-                    Game round = new Game(brains.get(playerX), brains.get(playerY), world);                
-                    AntBrain winner = round.runGame(); // run the round and get a winner
-                    
-                    if(winner != null){
-                        //System.out.println("Winner: " + brains.indexOf(winner));
-                        int addTo = brains.indexOf(winner); // get index of winner
-                        int currentScore = score.get(addTo);
-                        score.set(addTo, currentScore+2);
-                    }
-                    else{
-                        //System.out.println("Draw");
-                        int currentScoreOne = score.get(playerX);
-                        score.set(playerX, currentScoreOne+1);
-                        int currentScoreTwo = score.get(playerY);
-                        score.set(playerY, currentScoreTwo+1);
+                System.out.println("Player No Size: " + playerNo.size());
+                if(playerY < playerNo.size()-1){
+                System.out.println("Jumped here");
+                Game round = new Game(brains.get(playerX), brains.get(playerY), world);                
+                AntBrain winner = round.runGame(); // run the round and get a winner
+                if(winner != null){
+                    System.out.println("Winner: " + brains.indexOf(winner));
+                    int addTo = brains.indexOf(winner); // get index of winner
+                    int currentScore = score.get(addTo);
+                    score.set(addTo, currentScore+2);
                 }
-                
-                    played.put(brains.get(playerX), brains.get(playerY)); // mark both brains as played
+                else{
+                    System.out.println("Draw");
+                    int currentScoreOne = score.get(playerX);
+                    score.set(playerX, currentScoreOne+1);
+                    int currentScoreTwo = score.get(playerY);
+                    score.set(playerY, currentScoreTwo+1);
+                }
+                played.put(brains.get(playerX), brains.get(playerY)); // mark both brains as played
                                
-                    playerY++;    
+                playerY++;    
                 }
                 
                 else if(playerX+2 < playerNo.size()){
-                    
                     playerX++;
                     playerY = playerX+1;
                 }
@@ -195,9 +76,8 @@ public class Tournament {
   
         }    
         
-        
         int highestScore = Collections.max(score);
-        //System.out.println("High Score: " + highestScore);
+        System.out.println("High Score: " + highestScore);
         
         int j = 0;
         for (int i = 0; i < score.size(); i++) {
@@ -211,11 +91,10 @@ public class Tournament {
         }
         
         int owner = score.indexOf(highestScore);
-        //System.out.println("Owner: " + score.indexOf(highestScore));
+        System.out.println("Owner: " + score.indexOf(highestScore));
         AntBrain finalWinner = brains.get(owner);
 
         return finalWinner;
-
     }
     
 
