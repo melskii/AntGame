@@ -13,6 +13,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -59,7 +61,7 @@ public class TournamentChoices extends JFrame{
      public void mainFrame()
      {   
    
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         Container c = getContentPane();
 
@@ -111,6 +113,12 @@ public class TournamentChoices extends JFrame{
         getContentPane().add(p4);
 
         setPreferredSize(new Dimension(500, 200));
+        
+         addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
+                close(true);
+            }
+           });
         
         next.addActionListener(new ActionListener() {
             
@@ -167,7 +175,7 @@ public class TournamentChoices extends JFrame{
                 
                 
                 AntGameUpload upload = new AntGameUpload(competition, true);
-                close();
+                close(false);
                 
                 
                 
@@ -216,8 +224,15 @@ public class TournamentChoices extends JFrame{
     /**
      * Exits the JFrame
      */
-    public void close()
+    public void close(boolean restart)
     {
+        if (restart)
+        {
+            AntGameRun run = new AntGameRun();
+            run.mainFrame();
+        }
+        
+        
         setVisible(false);
         dispose();
                 

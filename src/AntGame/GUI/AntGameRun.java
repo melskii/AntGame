@@ -180,15 +180,22 @@ public class AntGameRun extends JFrame {
                game = new LinkedHashMap<String, Object>();
                
                
-               File _file = new File("N:\\Documents\\sample2.ant");
-               File _world = new File("N:\\Documents\\tiny.world");
+               File _file = new File("sample2.ant");
+               
+               /*try {
+                System.out.println(_file.getCanonicalPath());
+               } catch (Exception ex)
+               {
+                   System.out.println("e: " + ex);
+               }*/
+               
                
                try {
                AntBrain brain1 = new AntBrain(_file);
                AntBrain brain2 = new AntBrain(_file);
                
                AntWorldGenerator gen = new AntWorldGenerator();
-               File f = gen.antWorldGenerator("Quick_start");
+               File f = gen.antWorldGenerator("test.world");
                AntWorld world = gen.antWorldGenerator(f);
                
                

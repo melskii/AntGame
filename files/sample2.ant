@@ -1,18 +1,18 @@
-Sense LeftAhead 5 1 Food
-Sense RightAhead 6 17 Food
-Sense Here 7 3 Food
-Move 0 4
-Turn Left 3
-Turn Left 0
-Turn Right 0
-PickUp 8 0
-Sense LeftAhead 14 9 Home
-Sense RightAhead 15 10 Home
-Sense Ahead 12 11 Home
-Sense Here 13 12 Home
-Move 13 16
 Drop 0
-Turn Left 10
-Turn Right 8
-Turn Left 12
-Sense Ahead 3 2 Food
+Sense LeftAhead 8 3 Food
+Sense RightAhead 9 4  Food
+Sense Ahead 6 5 Food
+Sense Here 9 6 Food
+Move 10 7
+Turn Left 6
+Turn Left 2
+Turn Right 2
+PickUp 10 1 
+Sense Here 0 11 Home
+Sense LeftAhead 15 12 Home
+Sense RightAhead 16 13 Home
+Sense Ahead 14 14 Home
+Move 10 16
+Turn Left 10 
+Turn Left 14
+Turn Right 10

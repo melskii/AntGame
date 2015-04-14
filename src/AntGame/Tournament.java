@@ -37,23 +37,23 @@ public class Tournament {
         int playerY = 0;
         
         while (playerX < playerNo.size()){
-            System.out.println("Player X :" + playerX);
-            System.out.println("Player Y :" + playerY);
-            System.out.println("Brains size: " + brains.size());
+           // System.out.println("Player X :" + playerX);
+           // System.out.println("Player Y :" + playerY);
+           // System.out.println("Brains size: " + brains.size());
             if(played.get(brains.get(playerX)) != brains.get(playerY)){
-                System.out.println("Player No Size: " + playerNo.size());
+                //System.out.println("Player No Size: " + playerNo.size());
                 if(playerY < playerNo.size()-1){
-                System.out.println("Jumped here");
+                //System.out.println("Jumped here");
                 Game round = new Game(brains.get(playerX), brains.get(playerY), world);                
                 AntBrain winner = round.runGame(); // run the round and get a winner
                 if(winner != null){
-                    System.out.println("Winner: " + brains.indexOf(winner));
+                    //System.out.println("Winner: " + brains.indexOf(winner));
                     int addTo = brains.indexOf(winner); // get index of winner
                     int currentScore = score.get(addTo);
                     score.set(addTo, currentScore+2);
                 }
                 else{
-                    System.out.println("Draw");
+                    //System.out.println("Draw");
                     int currentScoreOne = score.get(playerX);
                     score.set(playerX, currentScoreOne+1);
                     int currentScoreTwo = score.get(playerY);
@@ -77,21 +77,21 @@ public class Tournament {
         }    
         
         int highestScore = Collections.max(score);
-        System.out.println("High Score: " + highestScore);
+        //System.out.println("High Score: " + highestScore);
         
         int j = 0;
         for (int i = 0; i < score.size(); i++) {
             if(score.get(i) == highestScore){
                 j++;
                 if(j > 2){
-                    System.out.println("It was a draw");
+                    //System.out.println("It was a draw");
                     return null;
                 }
             }         
         }
         
         int owner = score.indexOf(highestScore);
-        System.out.println("Owner: " + score.indexOf(highestScore));
+        //System.out.println("Owner: " + score.indexOf(highestScore));
         AntBrain finalWinner = brains.get(owner);
 
         return finalWinner;
