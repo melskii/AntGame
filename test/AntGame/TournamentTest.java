@@ -51,8 +51,8 @@ public class TournamentTest {
         AntWorld world = null;
         
         for (int i = 0; i < 3; i++) {
-            File f = new File("C:\\Users\\Olivia\\Documents\\NetBeansProjects\\AntGame\\files\\sample2.ant");
-            File w = new File("C:\\Users\\Olivia\\Documents\\NetBeansProjects\\AntGame\\files\\sample0.world");
+            File f = new File("N:\\Documents\\sample2.ant");
+            File w = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\tiny.world");
             AntBrain brain = new AntBrain(f);
             AntWorldGenerator gen = new AntWorldGenerator();
             
@@ -67,6 +67,17 @@ public class TournamentTest {
         System.out.println("Scores: " + instance.score);
         
         instance.runTournament();
+    }
+    
+    @Test 
+    public void testGUIRunTournament() throws Exception {
+        
+        System.out.println("Run Gui Tournament");
+        
+        
+        
+        
+        
     }
     
     

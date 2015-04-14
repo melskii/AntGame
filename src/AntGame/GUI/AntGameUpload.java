@@ -34,12 +34,14 @@ import javax.swing.JTextField;
  */
 public class AntGameUpload extends JFrame{
     
-    JButton upload, next;
-    JTextField textArea, textValid;
-    boolean valid;
-    boolean brain;
-    String title;
-    String key; 
+    private JButton upload, next;
+    private JTextField textArea, textValid;
+    private boolean valid;
+    private boolean brain;
+    private boolean randomWorld;
+    private boolean tournament;
+    private String title;
+    private String key; 
    
     LinkedHashMap<String, Object> game;
  
@@ -48,11 +50,12 @@ public class AntGameUpload extends JFrame{
      
     
     
-     public AntGameUpload (LinkedHashMap<String, Object> game)
+     public AntGameUpload (LinkedHashMap<String, Object> game, boolean tournament)
      {
          super();
          
          this.game = game;
+         this.tournament = tournament;
                   
          Iterator it = game.entrySet().iterator();
       
@@ -61,10 +64,11 @@ public class AntGameUpload extends JFrame{
          {
              Map.Entry pair = (Map.Entry)it.next();
              
+             this.key = (String)pair.getKey();
+             
              if (pair.getValue() == null)
              {
-                 this.key = (String)pair.getKey();
-                 
+                
                  if (key.startsWith("Brain"))
                  {
                      this.title = "Upload " + (String)pair.getKey();
@@ -76,11 +80,23 @@ public class AntGameUpload extends JFrame{
                  else if (key.startsWith("World"))
                  {
                       this.title = "Upload " + (String)pair.getKey();
-                    
+              
                       setTitle(title);
                  }
                  
                  break;
+             }
+             
+             else {
+                 
+                 if (key.startsWith("World"))
+                 {
+                     randomWorld = true;
+                     this.title = "Upload " + (String)pair.getKey();
+                     setTitle(title);
+             
+                 }
+                 
              }
              
              
@@ -349,7 +365,7 @@ public class AntGameUpload extends JFrame{
                 if (pair.getValue() == null)
                 {
                     map = false;
-                    AntGameUpload upload = new AntGameUpload(game);
+                    AntGameUpload upload = new AntGameUpload(game, tournament);
                     break;
                 }
 
@@ -358,7 +374,7 @@ public class AntGameUpload extends JFrame{
 
             if (map)
             {
-                AntMap load = new AntMap(game);
+                AntMap load = new AntMap(game, tournament);
             }
 
 

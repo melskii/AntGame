@@ -33,8 +33,7 @@ public class Game {
         
         setupGame();
             
-       
-        
+      
     }
     
     /**
@@ -84,10 +83,13 @@ public class Game {
      */
     public AntBrain runGame() throws PositionException, AntException, AntBrainException {
         
+        System.out.println("Start Here");
+        
         counter = 300000;
         
         long timer = 0;
-        long step = 4000;
+        long step = 3000;
+        //long step = 100;
   
         int play = 1;
         
@@ -121,6 +123,8 @@ public class Game {
             
         }
         
+        System.out.println("counter = " + counter);
+        
         int _score1 = antbrain1.getBrainScore();
         int _score2 = antbrain2.getBrainScore();
         AntBrain win = null;
@@ -134,6 +138,8 @@ public class Game {
         {
             win = antbrain2;
         }
+        
+        
         
         System.out.println("End Game");
         return win;

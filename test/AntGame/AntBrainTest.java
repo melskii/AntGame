@@ -101,7 +101,7 @@ public class AntBrainTest {
         File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample.ant");
         AntBrain instance = new AntBrain(f);
         
-        instance.setAntWorld(new AntWorld(10,10));
+        instance.setAntWorld(new AntWorld(10,10, f));
         
         instance.setColour(c);
         String result = instance.getColour();
@@ -123,7 +123,7 @@ public class AntBrainTest {
         File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample.ant");
         AntBrain instance = new AntBrain(f);
         
-        AntWorld w = new AntWorld(10,10);
+        AntWorld w = new AntWorld(10,10,f);
         w.getPosition(3, 3).setAntHill("Red");
         
         instance.setAntWorld(w);
@@ -148,7 +148,7 @@ public class AntBrainTest {
         File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample.ant");
         AntBrain instance = new AntBrain(f);
         
-        AntWorld w = new AntWorld(10,10);
+        AntWorld w = new AntWorld(10,10,f);
         
         w.getPosition(2, 4).setAntHill("Red");
         
@@ -183,7 +183,7 @@ public class AntBrainTest {
         File f = new File("N:\\Documents\\Year 2\\Software Engineering\\AntGame\\AntGame\\files\\sample.ant");
         AntBrain instance = new AntBrain(f);
         
-        AntWorld w = new AntWorld(10,10);
+        AntWorld w = new AntWorld(10,10,f);
         
         w.getPosition(2, 4).setAntHill("Red");
         w.getPosition(3, 4).setAntHill("Red");

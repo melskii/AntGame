@@ -51,8 +51,8 @@ public class AntMap extends JFrame {
     private String playerStats[][];
     private HashMap<Integer, AntBrain> tournamentScores;
     private JScrollPane scrollTable;
+    private boolean tournament;
     
-    private JTable tournamentTable;
     
     private JLabel lblWinner;
     
@@ -65,14 +65,17 @@ public class AntMap extends JFrame {
     }*/
 
     
-    public AntMap(LinkedHashMap<String, Object> game)
+    public AntMap(LinkedHashMap<String, Object> game, boolean tournament)
     {
         super("Ant Map");
         
         this.game = game; 
         this.reRun = new ReRun(true);
+        this.tournament = tournament;
         
         createAndShowGUI();
+        
+        //System.out.println("tournament = " + tournament);
     }
 
 
@@ -88,9 +91,7 @@ public class AntMap extends JFrame {
         }
 
         mapPanel = new MapPanel(world);
-
         
-
         createMenuBar();
 
         JPanel statusPanel = new JPanel();
@@ -378,7 +379,7 @@ public class AntMap extends JFrame {
                 AntBrain b2 = (AntBrain)game.get("Brain 2");
                 AntWorld w = (AntWorld)game.get("World");
                 
-                
+                //System.out.println("_brain 1 = " + b1);
                 
                 Game gamerun = null;
                 
@@ -399,7 +400,7 @@ public class AntMap extends JFrame {
                 
                 if (gamerun != null)
                 {
-                    RunnableGame run = new RunnableGame(gamerun, mapPanel, statusLabel, reRun, lblWinner);
+                    RunnableGame run = new RunnableGame(gamerun, mapPanel, statusLabel, reRun, lblWinner, scoreboardTable, game, scrollTable);
                     runThread = new Thread(run);
                     
                 }
@@ -408,35 +409,41 @@ public class AntMap extends JFrame {
                 if (world.xlength > 0 && gamerun != null)
                 {
                     
-                    
-
                     paintloop:
-                    for (int i = 0; i < 20000; i++)
+                    for (int i = 0; i < 50000; i++)
                     {
-
-
                         
                         
                         remove(mapPanel);
 
                         mapPanel = new MapPanel(world);
                         add(mapPanel);
-                                              
-                        updateScoreboard();
+  
+                        
+                        if (startThread) {
+                        
+                       
+                            if (gamerun.getRemainingMoves() == -1)
+                            {
+                                 updateScoreboard();
 
-                       // int s = 0;
-
-                       // while (i < 20000 && (s % 2) == 0)
-                       // {
-                         //   updateScoreboard();
-                          //  s++;
-                        //}
-
+                            } 
+                        }
+                    
+                        
+                        
                         //updateScoreboard();
-
-                        if (reRun.rerun())
+                       // System.out.println("reRun.rerun() = " + reRun.rerun());
+                        
+                        //System.out.println(runThread.getState());
+                        
+                        if (gamerun.getRemainingMoves() == -1)//
                         {                            
+                            System.out.println("hit rerun");
+                            
                             runThread.interrupt();
+                            pack();
+                            //System.out.println("End reRun.rerun() = " + reRun.rerun());
                             break paintloop;
                         }
 
@@ -446,36 +453,37 @@ public class AntMap extends JFrame {
                     if (!startThread)
                     {
                         startThread = true;
+                        //System.out.println("Hit here thread start");
+                        
                         runThread.start();
+                         
+                       // System.out.println("Hit here thread after start"); 
+                        updateScoreboard();
                         
                     }
                     
                     
                     
-                    //AntBrain b1 = (AntBrain)game.get("Brain 1");
-                    //AntBrain b2 = (AntBrain)game.get("Brain 2");
-                  
-                    //statusLabel.setText("Player 1 (Team: " + b1.getColour() + ", Dead: " + b1.getDeadCount() + " , Score: " + b1.getBrainScore() + ") Player 2 (Team: " + b2.getColour() + ", Dead: " + b2.getDeadCount() + " , Score: " + b2.getBrainScore() + ")");          
-
+          
                     pack();
                 }
-
+           
             }
         }
         
-                
+        
+        
+        
         
     }
     
     
     public void updateScoreboard()
     {
-        
-        ///System.out.println("updating scoreboard");
-        
-        
         if (world.xlength > 0)
         {
+            //System.out.println("hit here");
+            
             scrollTable.remove(scoreboardTable);
 
             for (int j = 1; j < (game.size()); j++)
@@ -492,13 +500,17 @@ public class AntMap extends JFrame {
 
                     playerStats[0][j-1] = "Player: " + j;
                     playerStats[1][j-1] = "Colour: " + _brain.getColour();
+                    //System.out.println("_brain.getColour() = " + _brain.getColour());
                     
                     playerStats[3][j-1] = "Dead: " + _brain.getDeadCount();
+                    
+                   // System.out.println("_brain = " + _brain);
 
-                    //System.out.println("_brain.getBrainScore() = " + _brain.getBrainScore());
+                    
 
                 try {
                     playerStats[2][j-1] = "Score: " + _brain.getBrainScore();
+                    //System.out.println("_brain.getBrainScore() = " + _brain.getBrainScore());
                 } catch (Exception ex)
                 {
                    System.out.println("Error: " + ex.getMessage());

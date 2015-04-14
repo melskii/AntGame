@@ -22,6 +22,7 @@ public class AntBrain {
     private LinkedList<Ant> ants;
     private int currentAnt;
     private int deadCount;
+    private String teamName;
     
     private File file;
 
@@ -426,8 +427,8 @@ public class AntBrain {
         
         for (int i = 0; i < anthill.size(); i++)
         {
-            score += anthill.get(i).getFood();
-        }
+            score += anthill.get(i).getFood();   
+         }
         
         return score;
     }
@@ -435,9 +436,6 @@ public class AntBrain {
     
     public void step() throws AntException, PositionException
     {
-        
-        
-        
         
         if (deadCount != ants.size())
         {

@@ -4,6 +4,10 @@
  */
 package AntGame;
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import AntGame.GUI.*;
 /**
  *
  * @author ms660
@@ -14,6 +18,8 @@ public class main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+       
+        AntGameRun game = new AntGameRun();
+        game.mainFrame();
     }
 }

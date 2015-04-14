@@ -29,15 +29,14 @@ public class MapPanel extends JPanel  {
     private AntWorld antWorld;
     
     
+    
     HashMap<Point, Polygon> points;
     
     
     public MapPanel(AntWorld world)  {
         
         setBorder(BorderFactory.createLineBorder(Color.black));
-        
-        
-        
+    
         points = new HashMap<Point, Polygon>();
         
         this.x = world.xlength;
@@ -52,13 +51,8 @@ public class MapPanel extends JPanel  {
     public void paintComponent(Graphics g) {
         
         super.paintComponent(g);  
-        
-        
   
         int a = 1;
-        
-        
-        
         boolean _line2 = false;
         
         for (int j = 0; j < this.x; j++)
@@ -223,6 +217,12 @@ public class MapPanel extends JPanel  {
         
         int _x = (int)Math.ceil(x * 9.1) + 16;
         int _y = (int)Math.ceil(y * 8.1666667) + 12;
+        
+        if (_y < 100)
+        {
+            _y = 180;
+        }
+        System.out.println("_y = " + _y);
         
         return new Dimension(_x, _y);
     }

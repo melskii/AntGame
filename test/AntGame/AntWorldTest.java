@@ -51,7 +51,7 @@ public class AntWorldTest {
         System.out.println("getPosition");
         int x = 5;
         int y = 4;
-        AntWorld instance = new AntWorld(x, y);
+        AntWorld instance = new AntWorld(x, y, null);
         
         Position expResult = new Position(2,2);
         Position result = instance.getPosition(2,2);
@@ -74,7 +74,7 @@ public class AntWorldTest {
         int x = 5;
         int y = 4;
         Coords c = new Coords(2, 2);
-        AntWorld instance = new AntWorld(x, y);
+        AntWorld instance = new AntWorld(x, y , null);
         Position expResult = new Position(2,2);
         Position result = instance.getPosition(c);
                 
@@ -93,7 +93,7 @@ public class AntWorldTest {
     //@Test
     public void testGetAnt() throws PositionException {
         System.out.println("getAnt");
-        AntWorld instance = new AntWorld(5,4);
+        AntWorld instance = new AntWorld(5,4, null);
         Position p = instance.getPosition(2,1);
         Ant ant = new Ant("red");
         p.addAnt(ant);
@@ -109,7 +109,7 @@ public class AntWorldTest {
     //@Test
     public void testHasAnt() throws PositionException {
         System.out.println("hasAnt");
-        AntWorld instance = new AntWorld(5,4);
+        AntWorld instance = new AntWorld(5,4, null);
         Position p = instance.getPosition(2,1);
         Ant ant = new Ant("red");
         p.addAnt(ant);
@@ -123,7 +123,7 @@ public class AntWorldTest {
     //@Test
     public void testIsSurrounding() throws Exception {
         System.out.println("isSurrounding");
-        AntWorld instance = new AntWorld(10,10);
+        AntWorld instance = new AntWorld(10,10, null);
         Position one = instance.getPosition(3,2);
         System.out.println("Added Position: " + one);
         Position two = instance.getPosition(2,2);
@@ -160,7 +160,7 @@ public class AntWorldTest {
     @Test
     public void testIsSurrounded() throws Exception {
         System.out.println("isSurrounded");
-        AntWorld instance = new AntWorld(10,10);
+        AntWorld instance = new AntWorld(10,10, null);
         Position one = instance.getPosition(3,2);
         System.out.println("Added Position: " + one);
         Position two = instance.getPosition(2,2);
@@ -198,7 +198,7 @@ public class AntWorldTest {
     public void testKill_ant() throws Exception {
         System.out.println("kill_ant");
         
-        AntWorld instance = new AntWorld(5,4);
+        AntWorld instance = new AntWorld(5,4, null);
         Position p = instance.getPosition(2,1);
         Ant ant = new Ant("red");
         p.addAnt(ant);
@@ -212,7 +212,7 @@ public class AntWorldTest {
     //@Test
     public void testAdjacentCell() {
         System.out.println("adjacentCell");
-        AntWorld instance = new AntWorld(5,4);
+        AntWorld instance = new AntWorld(5,4, null);
         Position p = instance.getPosition(2,1);
         Position adj = instance.adjacentCell(p, 0);
         Position expected = instance.getPosition(3,1);
@@ -225,7 +225,7 @@ public class AntWorldTest {
     //@Test
     public void testSensed_cell() throws Exception {
         System.out.println("sensed_cell");
-        AntWorld instance = new AntWorld(5,4);
+        AntWorld instance = new AntWorld(5,4, null);
         Position p = instance.getPosition(2,1);
         Here sense = new Here();
         Position sensed = instance.sensed_cell(p, 0, sense);
