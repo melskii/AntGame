@@ -166,7 +166,7 @@ public class AntWorldGenerator {
         return antWorld;
     }
     
-    public AntWorld antWorldGenerator() throws PositionException, AntWorldGeneratorException
+    public File antWorldGenerator(String fileName) throws PositionException, AntWorldGeneratorException, IOException
     {
         ArrayList<Coords> generated = new ArrayList<>();
         antWorld = new AntWorld(150, 150);
@@ -213,10 +213,7 @@ public class AntWorldGenerator {
 
         antWorld = rockGen(antWorld); //adds fourteen rocks
 
-        
-        return antWorld;
-        
-        
+        return antWorldOutput(antWorld, fileName);
     }
     
     public Boolean validWorld(AntWorld a)
@@ -383,6 +380,74 @@ public class AntWorldGenerator {
         }
         
         return antworld;
+    }
+    
+    public File antWorldOutput(AntWorld antWorld, String fileName) throws UnsupportedEncodingException, IOException {
+        ArrayList<String> lines = new ArrayList<>();
+        Position position;
+        boolean even;
+        StringBuilder sb;
+        
+        for (int y = 0; y < 150; y++) {
+            
+            sb = new StringBuilder();
+            
+            even = (y % 2 == 0);
+            
+            for (int x = 0; x < 150; x++) {
+                position = antWorld.getPosition(x, y);
+                
+                if(!even){
+                    if (x == 0) {
+                        sb.append(' ');
+                    }
+                }
+                
+                if (position.getRocky()) {
+                    sb.append('#');
+                    sb.append(' ');
+                    continue;
+                }
+                
+                if ("Black".equals(position.getAntHill())) {
+                    sb.append('-');
+                    sb.append(' ');
+                    continue;
+                }
+                
+                if ("Red".equals(position.getAntHill())) {
+                    sb.append('+');
+                    sb.append(' ');
+                    continue;
+                }
+                
+                if (position.hasFood()) {
+                    sb.append(position.getFood());
+                    sb.append(' ');
+                    continue;
+                }
+                
+                else {
+                    sb.append('.');
+                    sb.append(' ');
+                }
+                
+            }
+            //System.out.println(sb.toString());
+            lines.add(sb.toString());
+        }
+        
+        File file = new File(fileName);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.write("150\n");
+        writer.write("150\n");
+        System.out.println("size: " + lines.size());
+        for (int i = 0; i < lines.size(); i++) {
+            writer.write(lines.get(i) + '\n');
+        }
+        writer.close();
+        
+        return file;
     }
     
     
