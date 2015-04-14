@@ -120,8 +120,8 @@ public class AntWorldGeneratorTest {
     
     @Test
     public void testFoodGen() throws PositionException, AntWorldGeneratorException { //Shows foodGen builds the same rectangle of food when starting from opposite corner with opposite direction
-        AntWorld antWorld = new AntWorld(10, 10);
-        AntWorld antWorld2 = new AntWorld(10, 10);
+        AntWorld antWorld = new AntWorld(10, 10, null);
+        AntWorld antWorld2 = new AntWorld(10, 10, null);
         AntWorldGenerator gen = new AntWorldGenerator();
         antWorld = gen.foodGen(antWorld, 6, 4, 3);
         antWorld2 = gen.foodGen(antWorld2, 0, 0, 0);
