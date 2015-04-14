@@ -2,6 +2,7 @@
 package AntGame;
 
 import AntGame.exceptions.AntWorldGeneratorException;
+import AntGame.exceptions.PositionException;
 import java.io.File;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -98,7 +99,15 @@ public class AntWorldGeneratorTest {
      * Test of antWorldGenerator method, of class AntWorldGenerator.
      */
     @Test
-    public void testAntWorldGenerator_boolean() {
+    public void testAntWorldGenerator_boolean() throws PositionException, AntWorldGeneratorException {
+        
+        AntWorldGenerator gen = new AntWorldGenerator();
+        for (int i = 0; i < 10000; i++) {
+            System.out.println(i);
+            AntWorld world = gen.antWorldGenerator();
+            
+        }
+        
     }
 
     /**
@@ -108,4 +117,17 @@ public class AntWorldGeneratorTest {
     public void testValidWorld() {
     }
     
+    @Test
+    public void testFoodGen() throws PositionException, AntWorldGeneratorException { //Shows foodGen builds the same rectangle of food when starting from opposite corner with opposite direction
+        AntWorld antWorld = new AntWorld(10, 10);
+        AntWorld antWorld2 = new AntWorld(10, 10);
+        AntWorldGenerator gen = new AntWorldGenerator();
+        antWorld = gen.foodGen(antWorld, 6, 4, 3);
+        antWorld2 = gen.foodGen(antWorld2, 0, 0, 0);
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                assertEquals(antWorld.getPosition(i, j).toString(), antWorld2.getPosition(i, j).toString());
+            }
+        }
+    }
 }

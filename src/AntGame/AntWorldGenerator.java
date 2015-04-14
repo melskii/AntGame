@@ -7,6 +7,7 @@ package AntGame;
 import AntGame.exceptions.AntWorldGeneratorException;
 import AntGame.exceptions.PositionException;
 import java.io.*;
+import static java.lang.Math.abs;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -165,36 +166,52 @@ public class AntWorldGenerator {
         return antWorld;
     }
     
-    public AntWorld antWorldGenerator(boolean tournament)
+    public AntWorld antWorldGenerator() throws PositionException, AntWorldGeneratorException
     {
-            antWorld = new AntWorld(150, 150);
+        ArrayList<Coords> generated = new ArrayList<>();
+        antWorld = new AntWorld(150, 150);
             
-            //rocky perimeter
-            for (int i = 0; i < 150; i++) {
-                for (int j = 0; j < 150; j++) {
-                    if (i == 0 || j == 0 || i == 149 || j == 149) {
-                        try {
-                            antWorld.getPosition(i, j).setRocky();
-                        } 
-                        catch (PositionException ex) {
-                        }
+        //rocky perimeter
+        for (int i = 0; i < 150; i++) {
+            for (int j = 0; j < 150; j++) {
+                if (i == 0 || j == 0 || i == 149 || j == 149) {
+                    try {
+                        antWorld.getPosition(i, j).setRocky();
+                    } 
+                    catch (PositionException ex) {
                     }
                 }
             }
+        }
             
-            //generate where then make first anthill
-            //antWorld = hillGen(antWorld, 10, 10, "Black");
-            
-            //generate where then make second
-            //antWorld = hillGen(antWorld, x, y, "Red");
-            
-            
-//            Random rand = new Random();
-//            int d = rand.nextInt(6);
-//            //generate where
-//            antWorld = foodGen(antWorld, x, y, d); //to be done 11 times
-            
-            //make 14 rocks
+        Coords firstHill = findFirstHillSpace();
+        Coords secondHill = findSecondHillSpace(firstHill);
+        generated.add(firstHill);
+        generated.add(secondHill);
+        
+        for(int i = 0; i < 11; i++) {
+            generated.add(findFoodSpace(generated));
+        }
+        
+        Random rand = new Random();
+        
+        //generated holds coordinates for placement of anthills and food blobs - indices 0 and 1 are valid for anthills
+        for (int i = 0; i < generated.size(); i++) {
+            int x = generated.get(i).getX();
+            int y = generated.get(i).getY();
+            if (i == 0) {
+                antWorld = hillGen(antWorld, x, y, "Black");
+            }
+            else if (i == 1) {
+                antWorld = hillGen(antWorld, x, y, "Red");
+            }
+            else {
+                int d = rand.nextInt(6);
+                antWorld = foodGen(antWorld, x, y, d);
+            }
+        }
+
+        antWorld = rockGen(antWorld); //adds fourteen rocks
 
         
         return antWorld;
@@ -207,9 +224,71 @@ public class AntWorldGenerator {
         return false;
     }
     
+    private Coords findFirstHillSpace() {
+
+        int potentialX = 0;
+        int potentialY = 0;
+        Random rand = new Random();     //the antworld will be empty aside from the rocky perimer so it does not matter where the hill generates
+        potentialX = rand.nextInt(136) + 4;
+        potentialY = rand.nextInt(134) + 1;
+        return new Coords(potentialX, potentialY);
+        
+    }
+    
+    private Coords findSecondHillSpace(Coords firstHill) {
+        
+        int potentialX = 0;
+        int potentialY = 0;
+        int firstX = firstHill.getX();
+        int firstY = firstHill.getY();
+        boolean found = false;
+        Random rand = new Random();
+        
+        while (!found) {
+            potentialX = rand.nextInt((136 - 4) + 1) + 4;
+            potentialY = rand.nextInt((134 - 1) + 1) + 1;
+            
+            if (abs(potentialX - firstX) > 13 || abs(potentialY - firstY) > 13)
+                    found = true;
+        }
+        return new Coords(potentialX, potentialY);
+    }
+    
+    private Coords findFoodSpace(ArrayList<Coords> coordList) {
+        
+        Random rand = new Random();
+        int potentialX = 0;
+        int potentialY = 0;
+        boolean found = false;
+        Coords current;
+        
+        while(!found) {
+            
+            potentialX = rand.nextInt(139 - 10) + 10;
+            potentialY = rand.nextInt(139 - 10) + 10;
+            
+            for(int i = 0; i < coordList.size(); i++) {
+                current = coordList.get(i);
+                
+                if (i == 0 || i == 1) {
+                    found = abs(potentialX - current.getX()) > 20 || abs(potentialY - current.getY()) > 20;
+                    if (!found)
+                        break;
+                }
+                
+                found = abs(potentialX - current.getX()) > 10 || abs(potentialY - current.getY()) > 10;
+                if (!found)
+                    break;
+            }
+        }
+        
+        return new Coords(potentialX, potentialY);
+    }    
+    
     //generates hexagon of side length 7 by horizontal lines from top left corner
-    private AntWorld hillGen(AntWorld antWorld, int x, int y, String colour) {
-        Position position = antWorld.getPosition(x, y);
+    private AntWorld hillGen(AntWorld antworld, int x, int y, String colour) throws AntWorldGeneratorException { 
+        
+        Position position = antworld.getPosition(x, y);
         Position startOfLine;
         int nextDir = 2;
         int lengthLine = 7;
@@ -218,19 +297,19 @@ public class AntWorldGenerator {
             if (i == 6) {        //  i == 6 at the widest part of the hexagon so change direction
                 nextDir = 1;
             }
-            
+            if (position.getRocky() || position.getAntHill() != null)
+                throw new AntWorldGeneratorException("Already an anthill");
             position.setAntHill(colour);
-            //System.out.println(position);
             startOfLine = position;
             
             for (int j = 0; j < lengthLine - 1; j++) {
-                position = antWorld.adjacentCell(position, 0);
+                position = antworld.adjacentCell(position, 0);
+                if (position.getRocky() || position.getAntHill() != null)
+                    throw new AntWorldGeneratorException("Already an anthill");
                 position.setAntHill(colour);
-                //System.out.println(position);
             }
             
-            position = antWorld.adjacentCell(startOfLine, nextDir);
-            //System.out.println("test2");
+            position = antworld.adjacentCell(startOfLine, nextDir);
             
             if (nextDir == 2) {
                 lengthLine += 1;
@@ -238,37 +317,74 @@ public class AntWorldGenerator {
             else if (nextDir == 1) { //if the direction has changed then each line needs to be smaller
                 lengthLine -= 1;
             }
-            //System.out.println(i);
-            //System.out.println(lengthLine);
         } 
         
-        return antWorld;
+        return antworld;
     }
     
     //int d is randomly generated to determine orientation of food blob
     //use adjacentCell() to find next position
-    private AntWorld foodGen(AntWorld antworld, int x, int y, int d) throws PositionException {
+    public AntWorld foodGen(AntWorld antworld, int x, int y, int d) throws PositionException, AntWorldGeneratorException { 
         Position position = antworld.getPosition(x, y);
         Position startOfLine;
         int nextLine = (d + 1) % 6; // one right turn 
         
         for (int i = 0; i < 5; i++) {
             
+            if (position.getAntHill() != null)
+                throw new AntWorldGeneratorException("Already an anthill, can't make food blob");
             position.addFood(5);
             startOfLine = position;
             
             for (int j = 0; j < 4; j ++) {
-                position = antWorld.adjacentCell(position, d);
+                position = antworld.adjacentCell(position, d);
+                if (position.getAntHill() != null)
+                    throw new AntWorldGeneratorException("Already an anthill, can't make food blob");
                 position.addFood(5);
             }
             
-            position = antWorld.adjacentCell(startOfLine, nextLine);
+            position = antworld.adjacentCell(startOfLine, nextLine);
             
             
         }
         
-        return antWorld;
+        return antworld;
+    }
+    
+    public AntWorld rockGen(AntWorld antworld) throws PositionException {
+        
+        Random rand = new Random();
+        int potentialX = 0;
+        int potentialY = 0;
+        int rockCount = 0;
+        boolean valid = true;
+        
+        while(rockCount < 14) {
+            
+            potentialX = rand.nextInt(148) + 1;
+            potentialY = rand.nextInt(148) + 1;
+            valid = true;
+            Position position = antworld.getPosition(potentialX, potentialY);
+            
+            if (position.getRocky() || position.getAntHill() != null || position.hasFood()) 
+                continue;
+            
+            for (int i = 0; i < 6; i++) {
+                Position surrounding = antworld.adjacentCell(position, i);
+                if (surrounding.getRocky() || surrounding.getAntHill() != null)
+                    valid = false;
+            }
+            
+            if(valid) {
+                    position.setRocky();
+                    rockCount += 1;
+            }
+            
+        }
+        
+        return antworld;
     }
     
     
+
 }

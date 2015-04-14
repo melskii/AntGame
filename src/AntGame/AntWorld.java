@@ -90,6 +90,7 @@ public class AntWorld {
         System.out.println("Given Postion: " + p);
         
         for(int j = 0; j < 6; j++){
+            System.out.println("Direction Given: " + j);
             while(i < 2){
                 Position search = adjacentCell(p, j);
                 
@@ -237,13 +238,13 @@ public class AntWorld {
     {      
         ArrayList anthill = new ArrayList();
         
-        if (colour == "Red" || colour == "Black")
+        if (colour.equals("Red") || colour.equals("Black"))
         {
             for (int i = 0;  i < xlength; i++)
             {
                 for (int j = 0; j < ylength; j++)
                 {
-                    if (antworld[i][j].getAntHill() == colour)
+                    if ((antworld[i][j].getAntHill()).equals(colour))
                     {
                         anthill.add(antworld[i][j]);
 
