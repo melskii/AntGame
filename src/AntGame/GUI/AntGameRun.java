@@ -238,7 +238,7 @@ public class AntGameRun extends JFrame {
       
 
 
-        control.add(quick);
+       // control.add(quick);
         control.add(exit);
         
         
