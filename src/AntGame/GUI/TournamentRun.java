@@ -13,6 +13,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -66,6 +68,12 @@ public class TournamentRun extends JFrame{
 
         GroupLayout layout = new GroupLayout(c);
         c.setLayout(layout);
+        
+         addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
+                close();
+            }
+           });
 
        
         start = new JButton("Start");
@@ -79,7 +87,7 @@ public class TournamentRun extends JFrame{
         boolean valid = false;
         //ran = false;
 
-        start.enable(valid);
+        start.enable(true);
         
 
         labelPlayers.setPreferredSize(new Dimension(350, 30));
@@ -120,8 +128,7 @@ public class TournamentRun extends JFrame{
             
             public void actionPerformed (ActionEvent e)
             {
-                System.out.println("hit here inside action");
-                runTournament();
+                            runTournament();
             }
             
             
@@ -171,12 +178,10 @@ public class TournamentRun extends JFrame{
         
         else if (start.getText() == "Reset Game")
         {
+             close();
             
-            
-            close();
-            
-            AntGameRun run = new AntGameRun();
-            run.mainFrame();
+            //AntGameRun run = new AntGameRun();
+            //run.mainFrame();
             
         }
     }
@@ -188,8 +193,14 @@ public class TournamentRun extends JFrame{
      */
     public void close()
     {
-        setVisible(false);
-        dispose();
+        if (start.isEnabled())
+        {
+            AntGameRun run = new AntGameRun();
+            run.mainFrame();
+
+            setVisible(false);
+            dispose();
+        }
                 
     } 
      
