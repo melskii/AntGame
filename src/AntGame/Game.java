@@ -126,7 +126,7 @@ public class Game {
             win = antbrain2;
         }
         
-        
+        System.out.println("End Game");
         return win;
         
         

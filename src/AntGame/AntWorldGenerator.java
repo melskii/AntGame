@@ -41,7 +41,7 @@ public class AntWorldGenerator {
             
             x = Integer.parseInt(firstLine);
             y = Integer.parseInt(secondLine);
-            antWorld = new AntWorld(x, y);
+            antWorld = new AntWorld(x, y, a);
             
         } catch (NumberFormatException e) {
             
@@ -169,7 +169,7 @@ public class AntWorldGenerator {
     public AntWorld antWorldGenerator() throws PositionException, AntWorldGeneratorException
     {
         ArrayList<Coords> generated = new ArrayList<>();
-        antWorld = new AntWorld(150, 150);
+        antWorld = new AntWorld(150, 150, null);
             
         //rocky perimeter
         for (int i = 0; i < 150; i++) {

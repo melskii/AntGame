@@ -22,6 +22,8 @@ public class AntBrain {
     private LinkedList<Ant> ants;
     private int currentAnt;
     private int deadCount;
+    
+    private File file;
 
 
     /**
@@ -33,6 +35,8 @@ public class AntBrain {
     public AntBrain (File b) throws IOException, AntBrainException
     {
 
+        this.file = b;
+        
         ArrayList<String> brain = new ArrayList<String>();
         BufferedReader br = new BufferedReader(new FileReader(b));
         
@@ -52,7 +56,22 @@ public class AntBrain {
         ants = new LinkedList<Ant>();       
 
     }
-
+    
+    /**
+     * Create a new brain from another existing AntBrain
+     * @param brain AntBrain
+     * @throws IOException
+     * @throws AntBrainException 
+     */
+    public AntBrain getCopyAntBrain ()  throws IOException, AntBrainException
+    {
+        System.out.println("generated new brain");
+        AntBrain _new =  new AntBrain (file);
+        
+        return _new;
+    }
+    
+    
     /**
      * 
      * @return Returns text for the label in the GUI
@@ -695,6 +714,8 @@ public class AntBrain {
     }
     
    
+    
+  
     
     
     

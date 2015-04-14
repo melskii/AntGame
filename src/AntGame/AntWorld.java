@@ -6,17 +6,20 @@ package AntGame;
 
 import java.util.ArrayList;
 import AntGame.Tokens.*;
-import AntGame.exceptions.AntBrainException;
-import AntGame.exceptions.PositionException;
+import AntGame.exceptions.*;
+import java.io.File;
+import java.io.IOException;
 
 public class AntWorld {
     
     Position[][] antworld;
     public int xlength;
     public int ylength;
+    private File file;
     
-    
-    public AntWorld(int x, int y) {   //might be better to have a contructor with antworld[][] parameter to be passed from generator already made rocky etc 
+    public AntWorld(int x, int y, File file) {   //might be better to have a contructor with antworld[][] parameter to be passed from generator already made rocky etc 
+        
+        this.file = file;
         
         antworld = new Position[x][y];
         
@@ -28,6 +31,20 @@ public class AntWorld {
                 antworld[i][j] = new Position(i,j);
             }
         }
+        
+    }
+    
+      /**
+     * Create a new world from another existing AntWorld
+     * @param world AntWorld
+     */
+    public AntWorld getCopyAntWorld () throws IOException, AntWorldGeneratorException, PositionException 
+    {
+        System.out.println("generated new world");
+        AntWorldGenerator gen = new AntWorldGenerator();
+        AntWorld _new =  gen.antWorldGenerator(file);
+        
+        return _new;
         
     }
     
