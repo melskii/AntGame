@@ -102,10 +102,12 @@ public class AntWorldGeneratorTest {
     @Test
     public void testAntWorldGenerator_boolean() throws PositionException, AntWorldGeneratorException, IOException {
         
-        AntWorldGenerator gen = new AntWorldGenerator();
-        for (int i = 0; i < 1; i++) {
-            System.out.println(i);
+        //AntWorldGenerator gen = new AntWorldGenerator();
+        for (int i = 0; i < 2500; i++) {
+            AntWorldGenerator gen = new AntWorldGenerator();
+            System.out.println("ran this many times: " + i);
             File world = gen.antWorldGenerator("world2.world");
+            gen.antWorldGenerator(world);
             
         }
         
@@ -120,8 +122,8 @@ public class AntWorldGeneratorTest {
     
     @Test
     public void testFoodGen() throws PositionException, AntWorldGeneratorException { //Shows foodGen builds the same rectangle of food when starting from opposite corner with opposite direction
-        AntWorld antWorld = new AntWorld(10, 10);
-        AntWorld antWorld2 = new AntWorld(10, 10);
+        AntWorld antWorld = new AntWorld(10, 10, null);
+        AntWorld antWorld2 = new AntWorld(10, 10, null);
         AntWorldGenerator gen = new AntWorldGenerator();
         antWorld = gen.foodGen(antWorld, 6, 4, 3);
         antWorld2 = gen.foodGen(antWorld2, 0, 0, 0);
