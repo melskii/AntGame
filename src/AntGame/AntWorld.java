@@ -55,6 +55,9 @@ public class AntWorld {
     
     public boolean isSurrounding(Position p, String colour) throws PositionException{
         boolean surrounding = false;
+        
+        System.out.println("Dead Surrounding here");
+        
         System.out.println("Postion Given: " + p);
         for(int j = 0; j < 6; j++){
             Position search = adjacentCell(p, j);
@@ -80,7 +83,7 @@ public class AntWorld {
     
     public boolean isSurrounded(Position p, String colour) throws PositionException { //I did this wrong, doesn't check colour doh
         boolean surrounded = true;
-
+        
         int i = 0;
         int surrBy = 0;
         
@@ -315,4 +318,4 @@ public class AntWorld {
         }
     }
     
-}
+    }
