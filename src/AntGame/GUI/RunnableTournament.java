@@ -107,6 +107,7 @@ public class RunnableTournament implements Runnable {
          {
              loading.setText("Error Loading the competition");
              start.setText("Reset Game");
+             start.setEnabled(true);
          }
             
     }

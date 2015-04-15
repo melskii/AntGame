@@ -195,7 +195,7 @@ public class Position {
      */
     public void clearMarker(Marker m) {
         
-        if (marker.containsKey(ant.getColour()))
+        if ((!marker.isEmpty()) && marker.containsKey(ant.getColour()))
         {
             Marker _m = marker.get(ant.getColour());
             

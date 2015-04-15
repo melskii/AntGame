@@ -51,7 +51,7 @@ public class TournamentTest {
         AntWorld world = null;
         
         for (int i = 0; i < 3; i++) {
-             File f = new File("N:\\Documents\\sample2.ant");
+             File f = new File("N:\\Documents\\sample.ant");
             
             AntWorldGenerator gen = new AntWorldGenerator();
             File fw =  gen.antWorldGenerator("test.world");
