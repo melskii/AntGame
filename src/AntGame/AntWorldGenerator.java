@@ -70,18 +70,20 @@ public class AntWorldGenerator {
                 position = line.charAt(0);
                 
                 if (!even) {
-                    if(position != ' ' && x == 0) {
-                        throw new AntWorldGeneratorException("Every other line must start with a space");
+                    
+                    if(position != ' ' && x == 0) {   
+                      sb = new StringBuilder(' ' + line);
                     }
-                    else {
-                        sb.deleteCharAt(0);
-                        line = sb.toString();
-                        prevWasSpace = false;
-                        if (line.isEmpty()) {
-                            continue;
-                        }
-                        position = line.charAt(0);
-                    }  
+                   
+                    sb.deleteCharAt(0);
+                    line = sb.toString();
+                    prevWasSpace = false;
+                    if (line.isEmpty()) {
+                        continue;
+                    }
+                    position = line.charAt(0);
+                    
+                     
                 }
                       
                 if (x == 0) {
